@@ -1,14 +1,99 @@
 ﻿using CelesTrakLib.Data;
 using CelesTrakLib.Response;
+using CsvHelper;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Net.Http;
+using System.Linq;
+using System;
 
 namespace CelesTrakLib
 {
-    public static class CelesTrak
+    public sealed class CelesTrak
     {
-        public static bool get_stations(out GetStationsResponse response)
+        public static CelesTrak Default { get; } = new CelesTrak();
+
+        public bool GetSatelliteCatalogs(out GetSatelliteCatalogsResponse response)
+        {
+            response = new GetSatelliteCatalogsResponse();
+
+            string targetSatCatFileName = string.Empty;
+
+            var satcatFiles = Directory.GetFiles(WorkingDirectory, $"*{_satcatFileName}");
+            var mostRecentSatcatFile = satcatFiles.OrderByDescending(x => Path.GetFileName(x).Replace(_satcatFileName, string.Empty)).FirstOrDefault();
+
+            bool needDownload = true;
+
+            if (!string.IsNullOrEmpty(mostRecentSatcatFile))
+            {
+                string date = Path.GetFileName(mostRecentSatcatFile).Replace(_satcatFileName, string.Empty);
+                string today = $"{DateTime.Now:yyyyMMdd}";
+
+                if (string.Compare(date, today, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    targetSatCatFileName = mostRecentSatcatFile;
+                    needDownload = false;
+                }
+            }
+
+            if (needDownload)
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string url = $"{_mainUrl}/pub/satcat.csv";
+
+                    try
+                    {
+                        var http_response = client.GetAsync(url).Result;
+                        response.ErrorCode = (int)http_response.StatusCode;
+
+                        if (http_response.IsSuccessStatusCode)
+                        {
+                            string fileName = Path.Combine(WorkingDirectory, $"{DateTime.Now:yyyyMMdd}{_satcatFileName}");
+
+                            using (var writer = new StreamWriter(fileName))
+                            {
+                                writer.Write(http_response.Content.ReadAsStringAsync().Result);
+                            }
+
+                            targetSatCatFileName = fileName;
+                        }
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        response.ErrorCode = null;
+                        response.ErrorMessage = ex.Message;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(targetSatCatFileName))
+            {
+                try
+                {
+                    using (var reader = new StreamReader(targetSatCatFileName))
+                    {
+                        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                        {
+                            response.SatelliteCatalogs = csv.GetRecords<SatelliteCatalog>().ToList();
+                        }
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    response.ErrorCode = null;
+                    response.ErrorMessage = ex.Message;
+                }
+            }
+
+            return false;
+        }
+
+        public bool get_stations(out GetStationsResponse response)
         {
             response = new GetStationsResponse();
 
@@ -19,7 +104,7 @@ namespace CelesTrakLib
                 try
                 {
                     var http_response = client.GetAsync(url).Result;
-                    response.error_code = (int)http_response.StatusCode;
+                    response.ErrorCode = (int)http_response.StatusCode;
 
                     if (http_response.IsSuccessStatusCode)
                     {
@@ -30,19 +115,33 @@ namespace CelesTrakLib
                     }
                     else
                     {
-                        response.error_message = http_response.Content.ReadAsStringAsync().Result;
+                        response.ErrorMessage = http_response.Content.ReadAsStringAsync().Result;
                     }
                 }
                 catch (HttpRequestException ex)
                 {
-                    response.error_code = null;
-                    response.error_message = $"Request error: {ex.Message}";
+                    response.ErrorCode = null;
+                    response.ErrorMessage = ex.Message;
                 }
+            }
 
-                return false;
+            return false;
+        }
+
+        public string WorkingDirectory
+        {
+            get => _workingDirectory;
+            set
+            {
+                _workingDirectory = value;
+                Directory.CreateDirectory(_workingDirectory);
             }
         }
 
+        private string _workingDirectory = "celestrak";
+
+        private static readonly string _mainUrl = "https://celestrak.org";
         private static readonly string _baseUrl = "https://celestrak.org/NORAD/elements/gp.php";
+        private static readonly string _satcatFileName = "_satcat.csv";
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using MvvmDialogs;
+using satellite_tracker.ViewModels;
 using System.Windows;
 
 namespace satellite_tracker
@@ -13,5 +11,15 @@ namespace satellite_tracker
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Ioc.Default.ConfigureServices(
+                new ServiceCollection()
+                    .AddSingleton<IDialogService, DialogService>()
+                    .AddTransient<MainWindowViewModel>()
+                    .BuildServiceProvider());
+
+            GlobalData.Default.Initialize();
+        }
     }
 }

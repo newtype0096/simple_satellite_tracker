@@ -1,0 +1,26 @@
+﻿<mah:MetroWindow x:Class="satellite_tracker.Views.SatelliteSearchWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:local="clr-namespace:satellite_tracker.Views"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:vm="clr-namespace:satellite_tracker.ViewModels"
+                 Title="Satellite Search"
+                 Width="800"
+                 Height="450"
+                 d:DataContext="{d:DesignInstance Type=vm:SatelliteSearchWindowViewModel}"
+                 Background="{StaticResource Sub_Background}"
+                 WindowTitleBrush="Transparent"
+                 mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitDialogCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Margin="5">
+        <DataGrid ItemsSource="{Binding SatelliteCatalog}" />
+    </Grid>
+</mah:MetroWindow>

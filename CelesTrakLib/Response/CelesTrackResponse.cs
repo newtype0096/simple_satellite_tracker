@@ -2,7 +2,7 @@
 {
     public class CelesTrackResponse
     {
-        public int? error_code { get; set; }
-        public string error_message { get; set; }
+        public int? ErrorCode { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }
