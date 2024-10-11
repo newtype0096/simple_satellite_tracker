@@ -11,7 +11,6 @@
                  Width="800"
                  Height="450"
                  md:DialogServiceViews.IsRegistered="True"
-                 Background="{StaticResource Main_Background}"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowVM}"
                  ResizeMode="CanResizeWithGrip"
                  WindowTitleBrush="Transparent"

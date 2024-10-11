@@ -1,6 +1,7 @@
 ﻿<mah:MetroWindow x:Class="satellite_tracker.Views.SatelliteSearchWindow"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:bi="https://github.com/moh3ngolshani/BusyIndicator"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:local="clr-namespace:satellite_tracker.Views"
@@ -11,7 +12,6 @@
                  Width="800"
                  Height="450"
                  d:DataContext="{d:DesignInstance Type=vm:SatelliteSearchWindowViewModel}"
-                 Background="{StaticResource Sub_Background}"
                  WindowTitleBrush="Transparent"
                  mc:Ignorable="d">
     <i:Interaction.Triggers>
@@ -20,7 +20,40 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid Margin="5">
-        <DataGrid ItemsSource="{Binding SatelliteCatalog}" />
-    </Grid>
+    <bi:BusyMask IsBusy="{Binding IsBusy}">
+        <bi:BusyMask.Background>
+            <SolidColorBrush Opacity="0.7" Color="Black" />
+        </bi:BusyMask.Background>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="{StaticResource Sub_Background}">
+                <StackPanel Margin="3"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Label Content="Search:" />
+                    <TextBox Width="300" />
+                </StackPanel>
+            </Grid>
+
+            <DataGrid Grid.Row="1"
+                      ColumnWidth="*"
+                      ItemsSource="{Binding SatelliteCatalog}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding OBJECT_ID}" Header="International&#x0a;Designator" />
+                    <DataGridTextColumn Binding="{Binding NORAD_CAT_ID}" Header="NORAD&#x0a;Catalog&#x0a;Number" />
+                    <DataGridTextColumn Binding="{Binding OBJECT_NAME}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding OWNER}" Header="Source" />
+                    <DataGridTextColumn Binding="{Binding LAUNCH_DATE}" Header="Launch&#x0a;Date" />
+                    <DataGridTextColumn Binding="{Binding LAUNCH_SITE}" Header="Launch&#x0a;Site" />
+                    <DataGridTextColumn Binding="{Binding DECAY_DATE}" Header="Decay&#x0a;Date" />
+                    <DataGridTextColumn Binding="{Binding OPS_STATUS_CODE}" Header="Ops&#x0a;Status" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </bi:BusyMask>
 </mah:MetroWindow>
