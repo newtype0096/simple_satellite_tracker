@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading;
 
 namespace satellite_tracker.Utils
 {
@@ -9,14 +10,28 @@ namespace satellite_tracker.Utils
     {
         private string _trackingListFileName;
 
-        private Dictionary<string ,OrbitalData> _targets = new Dictionary<string, OrbitalData>();
+        private bool _trackingThreadExit = false;
+        private Thread _trackingThread;
+
+        private Dictionary<string, OrbitalData> _targets = new Dictionary<string, OrbitalData>();
         public IReadOnlyDictionary<string, OrbitalData> Targets => _targets;
 
         public TrackingManager()
         {
             _trackingListFileName = Path.Combine(GlobalData.Default.CurrentDirectory, "tracking.txt");
-
             LoadTrackingList();
+        }
+
+        public void Start()
+        {
+            _trackingThread = new Thread(new ParameterizedThreadStart(TrackingThreadProc));
+            _trackingThread.Start(this);
+        }
+
+        public void Stop()
+        {
+            _trackingThreadExit = true;
+            _trackingThread.Join();
         }
 
         public void AddTrackingTarget(string id)
@@ -67,6 +82,16 @@ namespace satellite_tracker.Utils
                 {
                     writer.WriteLine(data);
                 }
+            }
+        }
+
+        private static void TrackingThreadProc(object param)
+        {
+            var obj = (TrackingManager)param;
+
+            while (obj._trackingThreadExit)
+            {
+                Thread.Sleep(100);
             }
         }
     }

@@ -17,9 +17,16 @@ namespace satellite_tracker
         public void Initialize()
         {
             CurrentDirectory = Directory.GetCurrentDirectory();
+
             TrackingManager = new TrackingManager();
+            TrackingManager.Start();
 
             CelesTrak.Default.WorkingDirectory = Path.Combine(CurrentDirectory, "celestrak");
+        }
+
+        public void Destory()
+        {
+            TrackingManager.Stop();
         }
 
         public IDialogService DialogService { get; set; }

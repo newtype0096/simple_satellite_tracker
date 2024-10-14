@@ -21,5 +21,10 @@ namespace satellite_tracker
 
             GlobalData.Default.Initialize();
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            GlobalData.Default.Destory();
+        }
     }
 }
