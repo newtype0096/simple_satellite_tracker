@@ -23,7 +23,6 @@ namespace satellite_tracker.ViewModels
 
             if (GlobalData.Default.DialogService.ShowDialog(this, vm) == true)
             {
-
             }
         }
     }
