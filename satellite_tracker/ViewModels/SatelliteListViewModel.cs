@@ -1,7 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CelesTrakLib;
+using CelesTrakLib.Datas;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,10 +23,7 @@ namespace satellite_tracker.ViewModels
         private void OnSettings()
         {
             var vm = new SatelliteSearchWindowViewModel();
-
-            if (GlobalData.Default.DialogService.ShowDialog(this, vm) == true)
-            {
-            }
+            GlobalData.Default.DialogService.ShowDialog(this, vm);
         }
     }
 }

@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using CelesTrakLib.Datas;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
-namespace satellite_tracker.Util
+namespace satellite_tracker.Utils
 {
-    public class TrackingListManager
+    public class TrackingManager
     {
         private string _trackingListFileName;
 
-        private HashSet<string> _datas { get; } = new HashSet<string>();
-        public IReadOnlyCollection<string> Datas => _datas;
+        private Dictionary<string ,OrbitalData> _targets = new Dictionary<string, OrbitalData>();
+        public IReadOnlyDictionary<string, OrbitalData> Targets => _targets;
 
-        public TrackingListManager()
+        public TrackingManager()
         {
             _trackingListFileName = Path.Combine(GlobalData.Default.CurrentDirectory, "tracking.txt");
 
@@ -19,15 +21,17 @@ namespace satellite_tracker.Util
 
         public void AddTrackingTarget(string id)
         {
-            if (_datas.Add(id))
+            if (_targets.ContainsKey(id))
             {
+                _targets.Add(id, new OrbitalData() { NORAD_CAT_ID = id });
+
                 RewriteTrackingList();
             }
         }
 
         public void RemoveTrackingTarget(string id)
         {
-            if (_datas.Remove(id))
+            if (_targets.Remove(id))
             {
                 RewriteTrackingList();
             }
@@ -35,7 +39,7 @@ namespace satellite_tracker.Util
 
         public bool IsTrackingTarget(string id)
         {
-            return _datas.Contains(id);
+            return _targets.ContainsKey(id);
         }
 
         private void LoadTrackingList()
@@ -47,7 +51,7 @@ namespace satellite_tracker.Util
                     string line = reader.ReadLine();
                     while (line != null)
                     {
-                        _datas.Add(line);
+                        _targets.Add(line, new OrbitalData() { NORAD_CAT_ID = line });
 
                         line = reader.ReadLine();
                     }
@@ -59,7 +63,7 @@ namespace satellite_tracker.Util
         {
             using (var writer = new StreamWriter(_trackingListFileName))
             {
-                foreach (var data in _datas)
+                foreach (var data in _targets)
                 {
                     writer.WriteLine(data);
                 }

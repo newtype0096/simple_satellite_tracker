@@ -10,21 +10,51 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              md:DialogServiceViews.IsRegistered="True"
+             Background="{StaticResource Third_Background}"
              mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" BorderThickness="0,0,0,1">
             <Grid Margin="5">
-                <Button HorizontalAlignment="Right"
-                        Command="{Binding SettingsCommand}"
-                        Content="Settings" />
+                <TextBlock HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="18"
+                           Text="Satellite" />
+
+                <Button Width="25"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding SettingsCommand}">
+                    <Button.Content>
+                        <Path Width="25"
+                              Height="25"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Data="{StaticResource CogLine}"
+                              Fill="White"
+                              StrokeThickness="1" />
+                    </Button.Content>
+                </Button>
             </Grid>
         </Border>
 
-        <DataGrid Grid.Row="1" />
+        <DataGrid Grid.Row="1"
+                  ColumnWidth="*"
+                  SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" />
+                <DataGridTextColumn Header="NORAD&#x0a;Catalog&#x0a;Number" />
+                <DataGridTextColumn Header="Epoch" />
+                <DataGridTextColumn Header="Mean&#x0a;Motion" />
+                <DataGridTextColumn Header="Eccentricity" />
+                <DataGridTextColumn Header="Inclination" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

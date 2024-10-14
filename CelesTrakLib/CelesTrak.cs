@@ -1,6 +1,7 @@
 ﻿using CelesTrakLib.Datas;
 using CelesTrakLib.Responses;
 using CsvHelper;
+using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using System.IO;
@@ -96,6 +97,41 @@ namespace CelesTrakLib
             return false;
         }
 
+        public bool GetOribitalData(string norad_cat_id, out GetOrbitalDataResponse response)
+        {
+            response = new GetOrbitalDataResponse();
+
+            using (HttpClient client = new HttpClient())
+            {
+                string url = $"{_gpUrl}?CATNR={norad_cat_id}&FORMAT=json";
+
+                try
+                {
+                    var http_response = client.GetAsync(url).Result;
+                    response.ErrorCode = (int)http_response.StatusCode;
+
+                    if (http_response.IsSuccessStatusCode)
+                    {
+                        string jsonString = http_response.Content.ReadAsStringAsync().Result;
+                        response.Data = JsonConvert.DeserializeObject<OrbitalData>(jsonString);
+
+                        return true;
+                    }
+                    else
+                    {
+                        response.ErrorMessage = http_response.Content.ReadAsStringAsync().Result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response.ErrorCode = null;
+                    response.ErrorMessage = ex.Message;
+                }
+            }
+
+            return false;
+        }
+
         public string WorkingDirectory
         {
             get => _workingDirectory;
@@ -109,8 +145,7 @@ namespace CelesTrakLib
         private string _workingDirectory = "celestrak";
 
         private static readonly string _mainUrl = "https://celestrak.org";
-
-        //private static readonly string _baseUrl = "https://celestrak.org/NORAD/elements/gp.php";
+        private static readonly string _gpUrl = "https://celestrak.org/NORAD/elements/gp.php";
         private static readonly string _satcatFileName = "_satcat.csv";
     }
 }

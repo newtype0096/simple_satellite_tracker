@@ -72,9 +72,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CelesTrak.cs" />
+    <Compile Include="Datas\OrbitalData.cs" />
     <Compile Include="Datas\SatelliteCatalog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\CelesTrackResponse.cs" />
+    <Compile Include="Responses\GetOrbitalDataResponse.cs" />
     <Compile Include="Responses\GetSatelliteCatalogsResponse.cs" />
   </ItemGroup>
   <ItemGroup>

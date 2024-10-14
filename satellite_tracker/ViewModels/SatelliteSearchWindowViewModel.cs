@@ -1,4 +1,5 @@
 ﻿using CelesTrakLib;
+using CelesTrakLib.Datas;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
@@ -123,7 +124,7 @@ namespace satellite_tracker.ViewModels
         {
             foreach (var target in TargetSatelliteCatalogs)
             {
-                GlobalData.Default.TrackingListManager.AddTrackingTarget(target.Data.NORAD_CAT_ID);
+                GlobalData.Default.TrackingManager.AddTrackingTarget(target.Data.NORAD_CAT_ID);
             }
 
             DialogResult = true;
@@ -137,7 +138,7 @@ namespace satellite_tracker.ViewModels
                 {
                     var satcatInfo = new SatelliteCatalogInfo();
                     satcatInfo.Data = satcat;
-                    satcatInfo.IsTracking = GlobalData.Default.TrackingListManager.IsTrackingTarget(satcat.NORAD_CAT_ID);
+                    satcatInfo.IsTracking = GlobalData.Default.TrackingManager.IsTrackingTarget(satcat.NORAD_CAT_ID);
 
                     _satelliteCatalogs.Add(satcatInfo);
                 }

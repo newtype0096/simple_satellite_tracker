@@ -3,4 +3,6 @@
     <SolidColorBrush x:Key="Main_Line" Color="#3f3f46" />
 
     <SolidColorBrush x:Key="Sub_Background" Color="#2d2d30" />
+
+    <SolidColorBrush x:Key="Third_Background" Color="#3e3e42" />
 </ResourceDictionary>

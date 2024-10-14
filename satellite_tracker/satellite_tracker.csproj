@@ -112,7 +112,7 @@
     </ApplicationDefinition>
     <Compile Include="GlobalData.cs" />
     <Compile Include="Models\SatelliteCatalogInfo.cs" />
-    <Compile Include="Util\TrackingListManager.cs" />
+    <Compile Include="Utils\TrackingManager.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\SatelliteSearchWindowViewModel.cs" />
     <Compile Include="Views\Behaviros\DataGridSelectedItemsBehavior.cs" />
