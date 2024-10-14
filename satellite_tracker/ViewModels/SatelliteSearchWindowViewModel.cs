@@ -14,7 +14,12 @@ namespace satellite_tracker.ViewModels
     {
         private List<SatelliteCatalog> _satelliteCatalogs;
 
-        public bool? DialogResult { get; private set; }
+        private bool? _dialogResult;
+        public bool? DialogResult
+        {
+            get => _dialogResult;
+            private set => SetProperty(ref _dialogResult, value);
+        }
 
         private bool _isBusy = false;
         public bool IsBusy
@@ -78,11 +83,20 @@ namespace satellite_tracker.ViewModels
             set => SetProperty(ref _filteredSatelliteCatalogs, value);
         }
 
+        private List<SatelliteCatalog> _targetSatelliteCatalogs = new List<SatelliteCatalog>();
+        public List<SatelliteCatalog> TargetSatelliteCatalogs
+        {
+            get => _targetSatelliteCatalogs;
+            set => SetProperty(ref _targetSatelliteCatalogs, value);
+        }
+
         public RelayCommand InitDialogCommand { get; }
+        public RelayCommand OkCommand { get; }
 
         public SatelliteSearchWindowViewModel()
         {
             InitDialogCommand = new RelayCommand(OnInitDialog);
+            OkCommand = new RelayCommand(OnOk);
         }
 
         private void OnInitDialog()
@@ -105,6 +119,11 @@ namespace satellite_tracker.ViewModels
             worker.RunWorkerAsync();
         }
 
+        private void OnOk()
+        {
+            DialogResult = true;
+        }
+
         private void LoadSatcat()
         {
             if (CelesTrak.Default.GetSatelliteCatalogs(out var response))
@@ -121,19 +140,19 @@ namespace satellite_tracker.ViewModels
             }
 
             var checkBoxResult = _satelliteCatalogs
-                .Where(x => IsOnOrbit ? x.Data.OPS_STATUS_CODE != "D" : true)
-                .Where(x => IsActive ? x.Data.OPS_STATUS_CODE == "+" || x.Data.OPS_STATUS_CODE == "P" : true)
-                .Where(x => IsPayload ? x.Data.OBJECT_TYPE == "PAY" : true);
+                .Where(x => IsOnOrbit ? x.OPS_STATUS_CODE != "D" : true)
+                .Where(x => IsActive ? x.OPS_STATUS_CODE == "+" || x.OPS_STATUS_CODE == "P" : true)
+                .Where(x => IsPayload ? x.OBJECT_TYPE == "PAY" : true);
 
             var searchResult = checkBoxResult.Where(
-                x => x.Data.OBJECT_ID.ToUpper().Contains(SearchText) ||
-                x.Data.NORAD_CAT_ID.ToUpper().Contains(SearchText) ||
-                x.Data.OBJECT_NAME.ToUpper().Contains(SearchText) ||
-                x.Data.OWNER.ToUpper().Contains(SearchText) ||
-                x.Data.LAUNCH_DATE.ToUpper().Contains(SearchText) ||
-                x.Data.LAUNCH_SITE.ToUpper().Contains(SearchText) ||
-                x.Data.DECAY_DATE.ToUpper().Contains(SearchText) ||
-                x.Data.OPS_STATUS_CODE.ToUpper().Contains(SearchText));
+                x => x.OBJECT_ID.ToUpper().Contains(SearchText) ||
+                x.NORAD_CAT_ID.ToUpper().Contains(SearchText) ||
+                x.OBJECT_NAME.ToUpper().Contains(SearchText) ||
+                x.OWNER.ToUpper().Contains(SearchText) ||
+                x.LAUNCH_DATE.ToUpper().Contains(SearchText) ||
+                x.LAUNCH_SITE.ToUpper().Contains(SearchText) ||
+                x.DECAY_DATE.ToUpper().Contains(SearchText) ||
+                x.OPS_STATUS_CODE.ToUpper().Contains(SearchText));
 
             FilteredSatelliteCatalog = new ObservableCollection<SatelliteCatalog>(searchResult);
         }

@@ -5,6 +5,6 @@ namespace CelesTrakLib.Responses
 {
     public class GetSatelliteCatalogsResponse : CelesTrackResponse
     {
-        public List<SatelliteCatalog> SatelliteCatalogs { get; } = new List<SatelliteCatalog>();
+        public List<SatelliteCatalog> SatelliteCatalogs { get; set; }
     }
 }

@@ -1,14 +1,11 @@
 ﻿using CelesTrakLib.Datas;
 using CelesTrakLib.Responses;
 using CsvHelper;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+using System;
 using System.Globalization;
 using System.IO;
-using System.Net.Http;
 using System.Linq;
-using System;
-using CelesTrakLib.Descriptions;
+using System.Net.Http;
 
 namespace CelesTrakLib
 {
@@ -83,16 +80,7 @@ namespace CelesTrakLib
                     {
                         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                         {
-                            foreach (var data in csv.GetRecords<SatelliteCatalogData>())
-                            {
-                                var satelliteCatalog = new SatelliteCatalog();
-                                satelliteCatalog.Data = data;
-
-                                OperationalStatus.Datas.TryGetValue(data.OPS_STATUS_CODE, out var ops);
-                                satelliteCatalog.OpsStatusDescription = ops;
-
-                                response.SatelliteCatalogs.Add(satelliteCatalog);
-                            }
+                            response.SatelliteCatalogs = csv.GetRecords<SatelliteCatalog>().ToList();
                         }
                     }
 
@@ -121,6 +109,7 @@ namespace CelesTrakLib
         private string _workingDirectory = "celestrak";
 
         private static readonly string _mainUrl = "https://celestrak.org";
+
         //private static readonly string _baseUrl = "https://celestrak.org/NORAD/elements/gp.php";
         private static readonly string _satcatFileName = "_satcat.csv";
     }

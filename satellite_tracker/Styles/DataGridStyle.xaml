@@ -2,12 +2,12 @@
     <Style BasedOn="{StaticResource {x:Type DataGrid}}" TargetType="{x:Type DataGrid}">
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="Background" Value="{StaticResource Main_Background}" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="0,1,0,1" />
+        <Setter Property="BorderBrush" Value="{StaticResource Main_Line}" />
         <Setter Property="CanUserReorderColumns" Value="False" />
         <Setter Property="FontSize" Value="18" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="RowHeaderWidth" Value="0" />
-        <Setter Property="SelectionMode" Value="Single" />
     </Style>
 
     <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">

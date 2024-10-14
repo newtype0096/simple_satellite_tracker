@@ -113,10 +113,15 @@
     <Compile Include="GlobalData.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\SatelliteSearchWindowViewModel.cs" />
+    <Compile Include="Views\Behaviros\DataGridSelectedItemsBehavior.cs" />
     <Compile Include="Views\SatelliteSearchWindow.xaml.cs">
       <DependentUpon>SatelliteSearchWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Styles\BusyMaskStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ButtonStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\DataGridStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

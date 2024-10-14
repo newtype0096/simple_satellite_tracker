@@ -12,6 +12,7 @@
                  Height="450"
                  md:DialogServiceViews.IsRegistered="True"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowVM}"
+                 NonActiveWindowTitleBrush="Transparent"
                  ResizeMode="CanResizeWithGrip"
                  WindowTitleBrush="Transparent"
                  mc:Ignorable="d">
@@ -33,7 +34,8 @@
 
             <GridSplitter Grid.Row="1"
                           HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch" />
+                          VerticalAlignment="Stretch"
+                          Background="Black" />
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -42,11 +44,15 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+                <GridSplitter Grid.Column="1"
+                              HorizontalAlignment="Stretch"
+                              Background="Black" />
             </Grid>
         </Grid>
 
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+        <GridSplitter Grid.Column="1"
+                      HorizontalAlignment="Stretch"
+                      Background="Black" />
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -57,7 +63,8 @@
 
             <GridSplitter Grid.Row="1"
                           HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch" />
+                          VerticalAlignment="Stretch"
+                          Background="Black" />
         </Grid>
     </Grid>
 </mah:MetroWindow>
