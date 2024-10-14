@@ -1,4 +1,4 @@
-﻿namespace CelesTrakLib.Response
+﻿namespace CelesTrakLib.Responses
 {
     public class CelesTrackResponse
     {

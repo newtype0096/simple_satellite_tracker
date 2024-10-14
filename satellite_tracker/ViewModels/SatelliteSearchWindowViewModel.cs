@@ -1,15 +1,19 @@
 ﻿using CelesTrakLib;
-using CelesTrakLib.Data;
+using CelesTrakLib.Datas;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace satellite_tracker.ViewModels
 {
     public class SatelliteSearchWindowViewModel : ObservableObject, IModalDialogViewModel
     {
+        private List<SatelliteCatalog> _satelliteCatalogs;
+
         public bool? DialogResult { get; private set; }
 
         private bool _isBusy = false;
@@ -19,11 +23,59 @@ namespace satellite_tracker.ViewModels
             set => SetProperty(ref _isBusy, value);
         }
 
-        private ObservableCollection<SatelliteCatalog> _satelliteCatalogs;
-        public ObservableCollection<SatelliteCatalog> SatelliteCatalog
+        private bool _isPayload = false;
+        public bool IsPayload
         {
-            get => _satelliteCatalogs;
-            set => SetProperty(ref _satelliteCatalogs, value);
+            get => _isPayload;
+            set
+            {
+                SetProperty(ref _isPayload, value);
+
+                FilterSatCat();
+            }
+        }
+
+        private bool _isActive = false;
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                SetProperty(ref _isActive, value);
+
+                FilterSatCat();
+            }
+        }
+
+        private bool _isOnOrbit = false;
+        public bool IsOnOrbit
+        {
+            get => _isOnOrbit;
+            set
+            {
+                SetProperty(ref _isOnOrbit, value);
+
+                FilterSatCat();
+            }
+        }
+
+        private string _searchText = string.Empty;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                SetProperty(ref _searchText, value.ToUpper());
+
+                FilterSatCat();
+            }
+        }
+
+        private ObservableCollection<SatelliteCatalog> _filteredSatelliteCatalogs;
+        public ObservableCollection<SatelliteCatalog> FilteredSatelliteCatalog
+        {
+            get => _filteredSatelliteCatalogs;
+            set => SetProperty(ref _filteredSatelliteCatalogs, value);
         }
 
         public RelayCommand InitDialogCommand { get; }
@@ -42,6 +94,8 @@ namespace satellite_tracker.ViewModels
                 (sender, e) =>
                 {
                     LoadSatcat();
+
+                    FilterSatCat();
                 };
             worker.RunWorkerCompleted +=
                 (sender, e) =>
@@ -55,8 +109,33 @@ namespace satellite_tracker.ViewModels
         {
             if (CelesTrak.Default.GetSatelliteCatalogs(out var response))
             {
-                SatelliteCatalog = new ObservableCollection<SatelliteCatalog>(response.SatelliteCatalogs);
+                _satelliteCatalogs = response.SatelliteCatalogs;
             }
+        }
+
+        private void FilterSatCat()
+        {
+            if (_satelliteCatalogs == null)
+            {
+                return;
+            }
+
+            var checkBoxResult = _satelliteCatalogs
+                .Where(x => IsOnOrbit ? x.Data.OPS_STATUS_CODE != "D" : true)
+                .Where(x => IsActive ? x.Data.OPS_STATUS_CODE == "+" || x.Data.OPS_STATUS_CODE == "P" : true)
+                .Where(x => IsPayload ? x.Data.OBJECT_TYPE == "PAY" : true);
+
+            var searchResult = checkBoxResult.Where(
+                x => x.Data.OBJECT_ID.ToUpper().Contains(SearchText) ||
+                x.Data.NORAD_CAT_ID.ToUpper().Contains(SearchText) ||
+                x.Data.OBJECT_NAME.ToUpper().Contains(SearchText) ||
+                x.Data.OWNER.ToUpper().Contains(SearchText) ||
+                x.Data.LAUNCH_DATE.ToUpper().Contains(SearchText) ||
+                x.Data.LAUNCH_SITE.ToUpper().Contains(SearchText) ||
+                x.Data.DECAY_DATE.ToUpper().Contains(SearchText) ||
+                x.Data.OPS_STATUS_CODE.ToUpper().Contains(SearchText));
+
+            FilteredSatelliteCatalog = new ObservableCollection<SatelliteCatalog>(searchResult);
         }
     }
 }

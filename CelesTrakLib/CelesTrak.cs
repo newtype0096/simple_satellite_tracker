@@ -1,5 +1,5 @@
-﻿using CelesTrakLib.Data;
-using CelesTrakLib.Response;
+﻿using CelesTrakLib.Datas;
+using CelesTrakLib.Responses;
 using CsvHelper;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.IO;
 using System.Net.Http;
 using System.Linq;
 using System;
+using CelesTrakLib.Descriptions;
 
 namespace CelesTrakLib
 {
@@ -59,6 +60,11 @@ namespace CelesTrakLib
                             }
 
                             targetSatCatFileName = fileName;
+
+                            if (!string.IsNullOrEmpty(mostRecentSatcatFile))
+                            {
+                                File.Delete(mostRecentSatcatFile);
+                            }
                         }
                     }
                     catch (HttpRequestException ex)
@@ -77,48 +83,22 @@ namespace CelesTrakLib
                     {
                         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                         {
-                            response.SatelliteCatalogs = csv.GetRecords<SatelliteCatalog>().ToList();
+                            foreach (var data in csv.GetRecords<SatelliteCatalogData>())
+                            {
+                                var satelliteCatalog = new SatelliteCatalog();
+                                satelliteCatalog.Data = data;
+
+                                OperationalStatus.Datas.TryGetValue(data.OPS_STATUS_CODE, out var ops);
+                                satelliteCatalog.OpsStatusDescription = ops;
+
+                                response.SatelliteCatalogs.Add(satelliteCatalog);
+                            }
                         }
                     }
 
                     return true;
                 }
                 catch (Exception ex)
-                {
-                    response.ErrorCode = null;
-                    response.ErrorMessage = ex.Message;
-                }
-            }
-
-            return false;
-        }
-
-        public bool get_stations(out GetStationsResponse response)
-        {
-            response = new GetStationsResponse();
-
-            using (HttpClient client = new HttpClient())
-            {
-                string url = $"{_baseUrl}?GROUP=stations&FORMAT=json";
-
-                try
-                {
-                    var http_response = client.GetAsync(url).Result;
-                    response.ErrorCode = (int)http_response.StatusCode;
-
-                    if (http_response.IsSuccessStatusCode)
-                    {
-                        string jsonString = http_response.Content.ReadAsStringAsync().Result;
-                        response.Stations = JsonConvert.DeserializeObject<List<Satellite>>(jsonString);
-
-                        return true;
-                    }
-                    else
-                    {
-                        response.ErrorMessage = http_response.Content.ReadAsStringAsync().Result;
-                    }
-                }
-                catch (HttpRequestException ex)
                 {
                     response.ErrorCode = null;
                     response.ErrorMessage = ex.Message;
@@ -141,7 +121,7 @@ namespace CelesTrakLib
         private string _workingDirectory = "celestrak";
 
         private static readonly string _mainUrl = "https://celestrak.org";
-        private static readonly string _baseUrl = "https://celestrak.org/NORAD/elements/gp.php";
+        //private static readonly string _baseUrl = "https://celestrak.org/NORAD/elements/gp.php";
         private static readonly string _satcatFileName = "_satcat.csv";
     }
 }

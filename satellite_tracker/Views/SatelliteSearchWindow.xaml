@@ -32,26 +32,53 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Background="{StaticResource Sub_Background}">
-                <StackPanel Margin="3"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            Margin="3"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <CheckBox Content="Payload" IsChecked="{Binding IsPayload}" />
+                    <CheckBox Margin="5,0,0,0"
+                              Content="Active"
+                              IsChecked="{Binding IsActive}" />
+                    <CheckBox Margin="5,0,0,0"
+                              Content="On-Orbit"
+                              IsChecked="{Binding IsOnOrbit}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Margin="3"
                             HorizontalAlignment="Right"
                             Orientation="Horizontal">
                     <Label Content="Search:" />
-                    <TextBox Width="300" />
+                    <TextBox Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </Grid>
 
             <DataGrid Grid.Row="1"
                       ColumnWidth="*"
-                      ItemsSource="{Binding SatelliteCatalog}">
+                      ItemsSource="{Binding FilteredSatelliteCatalog}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding OBJECT_ID}" Header="International&#x0a;Designator" />
-                    <DataGridTextColumn Binding="{Binding NORAD_CAT_ID}" Header="NORAD&#x0a;Catalog&#x0a;Number" />
-                    <DataGridTextColumn Binding="{Binding OBJECT_NAME}" Header="Name" />
-                    <DataGridTextColumn Binding="{Binding OWNER}" Header="Source" />
-                    <DataGridTextColumn Binding="{Binding LAUNCH_DATE}" Header="Launch&#x0a;Date" />
-                    <DataGridTextColumn Binding="{Binding LAUNCH_SITE}" Header="Launch&#x0a;Site" />
-                    <DataGridTextColumn Binding="{Binding DECAY_DATE}" Header="Decay&#x0a;Date" />
-                    <DataGridTextColumn Binding="{Binding OPS_STATUS_CODE}" Header="Ops&#x0a;Status" />
+                    <DataGridTextColumn Binding="{Binding Data.OBJECT_ID}" Header="International&#x0a;Designator" />
+                    <DataGridTextColumn Binding="{Binding Data.NORAD_CAT_ID}" Header="NORAD&#x0a;Catalog&#x0a;Number" />
+                    <DataGridTextColumn Binding="{Binding Data.OBJECT_NAME}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Data.OWNER}" Header="Source" />
+                    <DataGridTextColumn Binding="{Binding Data.LAUNCH_DATE}" Header="Launch&#x0a;Date" />
+                    <DataGridTextColumn Binding="{Binding Data.LAUNCH_SITE}" Header="Launch&#x0a;Site" />
+                    <DataGridTextColumn Binding="{Binding Data.DECAY_DATE}" Header="Decay&#x0a;Date" />
+                    <DataGridTextColumn Binding="{Binding Data.OPS_STATUS_CODE}" Header="Ops&#x0a;Status">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                                <Setter Property="ToolTip" Value="{Binding OpsStatusDescription}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
