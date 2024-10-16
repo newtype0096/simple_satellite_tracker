@@ -75,41 +75,50 @@ namespace SatelliteTrackerLib
                 {
                     foreach (var target in obj._targets)
                     {
-                        var apiTimeSpan = DateTime.Now - target.Value.LastApiUpdate;
-                        if (apiTimeSpan.TotalHours >= 2)
+                        var apiTryTimeSpan = DateTime.Now - target.Value.LastApiTry;
+                        var apiUpdateTimeSpan = DateTime.Now - target.Value.LastApiUpdate;
+                        if (apiUpdateTimeSpan.TotalHours >= 2 && apiTryTimeSpan.TotalSeconds >= 10)
                         {
-                            Task.Run(() =>
-                                {                                    
-                                    if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
-                                    {
-                                        target.Value.OrbitalData = orbitalDataResponse.Data;
-                                    }
+                            target.Value.LastApiTry = DateTime.Now;
 
-                                    if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
-                                    {
-                                        target.Value.TleData = tleDataResponse.Data;
-                                    }
+                            //Task.Run(() =>
+                            //    {
+                            //        if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
+                            //        {
+                            //            target.Value.OrbitalData = orbitalDataResponse.Data;
+                            //        }
 
-                                    obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
+                            //        if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
+                            //        {
+                            //            target.Value.TleData = tleDataResponse.Data;
+                            //        }
 
-                                    target.Value.LastApiUpdate = DateTime.Now;
-                                }
-                            );
+                            //        if (target.Value.OrbitalData != null && target.Value.TleData != null)
+                            //        {
+                            //            obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
+
+                            //            target.Value.LastApiUpdate = DateTime.Now;
+                            //        }
+                            //    }
+                            //);
                         }
 
-                        var positionTimeSpan = DateTime.Now - target.Value.LastPositionUpdate;
-                        if (positionTimeSpan.TotalSeconds >= 5 && target.Value.LastApiUpdate != DateTime.MinValue)
+                        if (target.Value.OrbitalData != null && target.Value.TleData != null)
                         {
-                            Task.Run(() =>
-                                {                                    
-                                    var tleItem = ParserTLE.parseTle(target.Value.TleData.Line1, target.Value.TleData.Line2, target.Value.OrbitalData.OBJECT_NAME);
-                                    target.Value.PositionData = SatFunctions.getSatPositionAtTime(tleItem, new EpochTime(DateTime.UtcNow), Sgp4.wgsConstant.WGS_84);
+                            var positionTimeSpan = DateTime.Now - target.Value.LastPositionUpdate;
+                            if (positionTimeSpan.TotalSeconds >= 5 && target.Value.LastApiUpdate != DateTime.MinValue)
+                            {
+                                Task.Run(() =>
+                                    {
+                                        var tleItem = ParserTLE.parseTle(target.Value.TleData.Line1, target.Value.TleData.Line2, target.Value.OrbitalData.OBJECT_NAME);
+                                        target.Value.PositionData = SatFunctions.getSatPositionAtTime(tleItem, new EpochTime(DateTime.UtcNow), Sgp4.wgsConstant.WGS_84);
 
-                                    obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
+                                        obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
 
-                                    target.Value.LastPositionUpdate = DateTime.Now;
-                                }
-                            );
+                                        target.Value.LastPositionUpdate = DateTime.Now;
+                                    }
+                                );
+                            }
                         }
                     }
                 }

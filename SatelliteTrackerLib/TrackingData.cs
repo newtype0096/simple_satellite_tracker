@@ -6,6 +6,7 @@ namespace SatelliteTrackerLib
 {
     public class TrackingData
     {
+        public DateTime LastApiTry { get; set; }
         public DateTime LastApiUpdate { get; set; }
         public OrbitalData OrbitalData { get; set; }
         public TleData TleData { get; set; }
