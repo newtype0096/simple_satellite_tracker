@@ -67,6 +67,9 @@
     <Reference Include="MvvmDialogs, Version=9.1.2.0, Culture=neutral, PublicKeyToken=3d3b9708589bc73e, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmDialogs.9.1.2\lib\net462\MvvmDialogs.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -112,7 +115,7 @@
     </ApplicationDefinition>
     <Compile Include="GlobalData.cs" />
     <Compile Include="Models\SatelliteCatalogInfo.cs" />
-    <Compile Include="Utils\TrackingManager.cs" />
+    <Compile Include="Models\SatelliteInfo.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\SatelliteSearchWindowViewModel.cs" />
     <Compile Include="Views\Behaviros\DataGridSelectedItemsBehavior.cs" />
@@ -215,6 +218,10 @@
     <ProjectReference Include="..\CelesTrakLib\CelesTrakLib.csproj">
       <Project>{2D44D4B2-3966-442C-84E2-E647D2523A49}</Project>
       <Name>CelesTrakLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SatelliteTrackerLib\SatelliteTrackerLib.csproj">
+      <Project>{3C13756A-4AEE-4DF4-94B6-C3007ED7DADC}</Project>
+      <Name>SatelliteTrackerLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

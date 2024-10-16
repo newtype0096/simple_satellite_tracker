@@ -1,5 +1,4 @@
 ﻿using CelesTrakLib;
-using CelesTrakLib.Datas;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
@@ -13,7 +12,7 @@ namespace satellite_tracker.ViewModels
 {
     public class SatelliteSearchWindowViewModel : ObservableObject, IModalDialogViewModel
     {
-        private List<SatelliteCatalogInfo> _satelliteCatalogs = new List<SatelliteCatalogInfo>();
+        private List<SatelliteCatalogInfo> _satelliteCatalogDatas = new List<SatelliteCatalogInfo>();
 
         private bool? _dialogResult;
         public bool? DialogResult
@@ -69,26 +68,21 @@ namespace satellite_tracker.ViewModels
         public string SearchText
         {
             get => _searchText;
-            set
-            {
-                SetProperty(ref _searchText, value.ToUpper());
-
-                FilterSatCat();
-            }
+            set => SetProperty(ref _searchText, value.ToUpper());
         }
 
-        private ObservableCollection<SatelliteCatalogInfo> _filteredSatelliteCatalogs;
-        public ObservableCollection<SatelliteCatalogInfo> FilteredSatelliteCatalog
+        private ObservableCollection<SatelliteCatalogInfo> _filteredSatelliteCatalogsInfos;
+        public ObservableCollection<SatelliteCatalogInfo> FilteredSatelliteCatalogInfos
         {
-            get => _filteredSatelliteCatalogs;
-            set => SetProperty(ref _filteredSatelliteCatalogs, value);
+            get => _filteredSatelliteCatalogsInfos;
+            set => SetProperty(ref _filteredSatelliteCatalogsInfos, value);
         }
 
-        private List<SatelliteCatalogInfo> _targetSatelliteCatalogs = new List<SatelliteCatalogInfo>();
-        public List<SatelliteCatalogInfo> TargetSatelliteCatalogs
+        private List<SatelliteCatalogInfo> _targetSatelliteCatalogInfos = new List<SatelliteCatalogInfo>();
+        public List<SatelliteCatalogInfo> TargetSatelliteCatalogInfos
         {
-            get => _targetSatelliteCatalogs;
-            set => SetProperty(ref _targetSatelliteCatalogs, value);
+            get => _targetSatelliteCatalogInfos;
+            set => SetProperty(ref _targetSatelliteCatalogInfos, value);
         }
 
         public RelayCommand InitDialogCommand { get; }
@@ -122,11 +116,6 @@ namespace satellite_tracker.ViewModels
 
         private void OnOk()
         {
-            foreach (var target in TargetSatelliteCatalogs)
-            {
-                GlobalData.Default.TrackingManager.AddTrackingTarget(target.Data.NORAD_CAT_ID);
-            }
-
             DialogResult = true;
         }
 
@@ -138,21 +127,21 @@ namespace satellite_tracker.ViewModels
                 {
                     var satcatInfo = new SatelliteCatalogInfo();
                     satcatInfo.Data = satcat;
-                    satcatInfo.IsTracking = GlobalData.Default.TrackingManager.IsTrackingTarget(satcat.NORAD_CAT_ID);
+                    satcatInfo.IsTracking = GlobalData.Default.SatelliteTracker.IsTrackingTarget(satcat.NORAD_CAT_ID);
 
-                    _satelliteCatalogs.Add(satcatInfo);
+                    _satelliteCatalogDatas.Add(satcatInfo);
                 }
             }
         }
 
-        private void FilterSatCat()
+        public void FilterSatCat()
         {
-            if (_satelliteCatalogs == null)
+            if (_satelliteCatalogDatas == null)
             {
                 return;
             }
 
-            var checkBoxResult = _satelliteCatalogs
+            var checkBoxResult = _satelliteCatalogDatas
                 .Where(x => IsOnOrbit ? x.Data.OPS_STATUS_CODE != "D" : true)
                 .Where(x => IsActive ? x.Data.OPS_STATUS_CODE == "+" || x.Data.OPS_STATUS_CODE == "P" : true)
                 .Where(x => IsPayload ? x.Data.OBJECT_TYPE == "PAY" : true);
@@ -167,7 +156,7 @@ namespace satellite_tracker.ViewModels
                 x.Data.DECAY_DATE.ToUpper().Contains(SearchText) ||
                 x.Data.OPS_STATUS_CODE.ToUpper().Contains(SearchText));
 
-            FilteredSatelliteCatalog = new ObservableCollection<SatelliteCatalogInfo>(searchResult);
+            FilteredSatelliteCatalogInfos = new ObservableCollection<SatelliteCatalogInfo>(searchResult);
         }
     }
 }

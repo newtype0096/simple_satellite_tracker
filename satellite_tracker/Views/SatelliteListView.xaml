@@ -46,10 +46,11 @@
 
         <DataGrid Grid.Row="1"
                   ColumnWidth="*"
+                  ItemsSource="{Binding SatelliteInfos}"
                   SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" />
-                <DataGridTextColumn Header="NORAD&#x0a;Catalog&#x0a;Number" />
+                <DataGridTextColumn Binding="{Binding CatalogData.OBJECT_NAME}" Header="Name" />
+                <DataGridTextColumn Binding="{Binding CatalogData.NORAD_CAT_ID}" Header="NORAD&#x0a;Catalog&#x0a;Number" />
                 <DataGridTextColumn Header="Epoch" />
                 <DataGridTextColumn Header="Mean&#x0a;Motion" />
                 <DataGridTextColumn Header="Eccentricity" />

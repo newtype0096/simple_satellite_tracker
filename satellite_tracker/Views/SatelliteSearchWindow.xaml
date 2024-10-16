@@ -60,15 +60,18 @@
                             HorizontalAlignment="Right"
                             Orientation="Horizontal">
                     <Label Content="Search:" />
-                    <TextBox Width="300" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox x:Name="SearchTextBox"
+                             Width="300"
+                             KeyDown="SearchTextBox_KeyDown"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </Grid>
 
             <DataGrid Grid.Row="1"
                       ColumnWidth="*"
-                      ItemsSource="{Binding FilteredSatelliteCatalog}">
+                      ItemsSource="{Binding FilteredSatelliteCatalogInfos}">
                 <i:Interaction.Behaviors>
-                    <bh:DataGridSelectedItemsBehavior SelectedItems="{Binding TargetSatelliteCatalogs}" />
+                    <bh:DataGridSelectedItemsBehavior SelectedItems="{Binding TargetSatelliteCatalogInfos}" />
                 </i:Interaction.Behaviors>
 
                 <DataGrid.Columns>

@@ -3,6 +3,7 @@ using CelesTrakLib.Responses;
 using CsvHelper;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -81,7 +82,7 @@ namespace CelesTrakLib
                     {
                         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                         {
-                            response.SatelliteCatalogs = csv.GetRecords<SatelliteCatalog>().ToList();
+                            response.SatelliteCatalogs = csv.GetRecords<SatelliteCatalogData>().ToList();
                         }
                     }
 
@@ -113,7 +114,53 @@ namespace CelesTrakLib
                     if (http_response.IsSuccessStatusCode)
                     {
                         string jsonString = http_response.Content.ReadAsStringAsync().Result;
-                        response.Data = JsonConvert.DeserializeObject<OrbitalData>(jsonString);
+                        response.Data = JsonConvert.DeserializeObject<List<OrbitalData>>(jsonString).FirstOrDefault();
+
+                        return true;
+                    }
+                    else
+                    {
+                        response.ErrorMessage = http_response.Content.ReadAsStringAsync().Result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response.ErrorCode = null;
+                    response.ErrorMessage = ex.Message;
+                }
+            }
+
+            return false;
+        }
+
+        public bool GetTleData(string norad_cat_id, out GetTleDataResponse response)
+        {
+            response = new GetTleDataResponse();
+
+            using (HttpClient client = new HttpClient())
+            {
+                string url = $"{_gpUrl}?CATNR={norad_cat_id}&FORMAT=tle";
+
+                try
+                {
+                    var http_response = client.GetAsync(url).Result;
+                    response.ErrorCode = (int)http_response.StatusCode;
+
+                    if (http_response.IsSuccessStatusCode)
+                    {
+                        string tleString = http_response.Content.ReadAsStringAsync().Result;
+                        var tleLines = tleString.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (tleLines.Length <= 2)
+                        {
+                            return false;
+                        }
+
+                        response.Data = new TleData()
+                        {
+                            Line1 = tleLines[1],
+                            Line2 = tleLines[2]
+                        };
 
                         return true;
                     }

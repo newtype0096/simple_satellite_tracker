@@ -1,6 +1,6 @@
 ﻿using CelesTrakLib;
 using MvvmDialogs;
-using satellite_tracker.Utils;
+using SatelliteTrackerLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,21 +18,21 @@ namespace satellite_tracker
         {
             CurrentDirectory = Directory.GetCurrentDirectory();
 
-            TrackingManager = new TrackingManager();
-            TrackingManager.Start();
+            SatelliteTracker = new SatelliteTracker();
+            SatelliteTracker.Start();
 
             CelesTrak.Default.WorkingDirectory = Path.Combine(CurrentDirectory, "celestrak");
         }
 
         public void Destory()
         {
-            TrackingManager.Stop();
+            SatelliteTracker.Stop();
         }
 
         public IDialogService DialogService { get; set; }
 
         public string CurrentDirectory { get; private set; }
 
-        public TrackingManager TrackingManager { get; private set; }
+        public SatelliteTracker SatelliteTracker { get; private set; }
     }
 }

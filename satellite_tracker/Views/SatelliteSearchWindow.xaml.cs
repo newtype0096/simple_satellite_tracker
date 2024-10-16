@@ -1,4 +1,5 @@
-﻿using System;
+﻿using satellite_tracker.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,15 @@ namespace satellite_tracker.Views
         public SatelliteSearchWindow()
         {
             InitializeComponent();
+        }
+
+        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var vm = DataContext as SatelliteSearchWindowViewModel;
+                vm?.FilterSatCat();
+            }
         }
     }
 }
