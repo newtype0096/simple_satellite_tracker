@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using satellite_tracker.Models;
+using SatelliteTrackerLib;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -27,6 +28,16 @@ namespace satellite_tracker.ViewModels
             _trackingTargetListFileName = Path.Combine(GlobalData.Default.CurrentDirectory, "tracking_targets.txt");
 
             SettingsCommand = new RelayCommand(OnSettings);
+
+            GlobalData.Default.SatelliteTracker.UpdateTrackingDataCallback +=
+                (string norad_cat_id, TrackingData trackingData) =>
+                {
+                    var info = SatelliteInfos.FirstOrDefault(x => x.CatalogData.NORAD_CAT_ID == norad_cat_id);
+                    if (info != null)
+                    {
+                        info.TrackingData = trackingData;
+                    }
+                };
 
             LoadTrackingTargetList();
         }
@@ -71,7 +82,7 @@ namespace satellite_tracker.ViewModels
                     {
                         GlobalData.Default.SatelliteTracker.AddTrackingTarget(data.NORAD_CAT_ID);
 
-                        SatelliteInfos.Add(new SatelliteInfo() { CatalogData = data});
+                        SatelliteInfos.Add(new SatelliteInfo() { CatalogData = data });
                     }
                 }
             }

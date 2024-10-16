@@ -1,4 +1,5 @@
 ﻿using CelesTrakLib;
+using One_Sgp4;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace SatelliteTrackerLib
 {
+    public delegate void UpdateTrackingData(string norad_cat_id, TrackingData trackingData);
+
     public class SatelliteTracker
     {
         private readonly object _cs = new object();
@@ -17,6 +20,8 @@ namespace SatelliteTrackerLib
         private Thread _trackingThread;
 
         private readonly Dictionary<string, TrackingData> _targets = new Dictionary<string, TrackingData>();
+
+        public UpdateTrackingData UpdateTrackingDataCallback { get; set; }
 
         public void Start()
         {
@@ -70,25 +75,41 @@ namespace SatelliteTrackerLib
                 {
                     foreach (var target in obj._targets)
                     {
-                        var timeSpan = DateTime.Now - target.Value.LastUpdate;
-                        if (timeSpan.TotalHours >= 2)
+                        var apiTimeSpan = DateTime.Now - target.Value.LastApiUpdate;
+                        if (apiTimeSpan.TotalHours >= 2)
                         {
-                            if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
-                            {
-                                target.Value.OrbitalData = orbitalDataResponse.Data;
-                            }
+                            Task.Run(() =>
+                                {                                    
+                                    if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
+                                    {
+                                        target.Value.OrbitalData = orbitalDataResponse.Data;
+                                    }
 
-                            if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
-                            {
-                                target.Value.TleData = tleDataResponse.Data;
-                            }
+                                    if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
+                                    {
+                                        target.Value.TleData = tleDataResponse.Data;
+                                    }
 
-                            target.Value.LastUpdate = DateTime.Now;
-                            break;
+                                    obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
+
+                                    target.Value.LastApiUpdate = DateTime.Now;
+                                }
+                            );
                         }
-                        else if (timeSpan.TotalSeconds >= 1)
-                        {
 
+                        var positionTimeSpan = DateTime.Now - target.Value.LastPositionUpdate;
+                        if (positionTimeSpan.TotalSeconds >= 5 && target.Value.LastApiUpdate != DateTime.MinValue)
+                        {
+                            Task.Run(() =>
+                                {                                    
+                                    var tleItem = ParserTLE.parseTle(target.Value.TleData.Line1, target.Value.TleData.Line2, target.Value.OrbitalData.OBJECT_NAME);
+                                    target.Value.PositionData = SatFunctions.getSatPositionAtTime(tleItem, new EpochTime(DateTime.UtcNow), Sgp4.wgsConstant.WGS_84);
+
+                                    obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
+
+                                    target.Value.LastPositionUpdate = DateTime.Now;
+                                }
+                            );
                         }
                     }
                 }
