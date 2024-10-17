@@ -95,9 +95,9 @@ namespace SatelliteTrackerLib
 
                                     if (target.Value.OrbitalData != null && target.Value.TleData != null)
                                     {
-                                        obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
-
                                         target.Value.LastApiUpdate = DateTime.Now;
+
+                                        obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);                                        
                                     }
                                 }
                             );
@@ -112,10 +112,9 @@ namespace SatelliteTrackerLib
                                     {
                                         var tleItem = ParserTLE.parseTle(target.Value.TleData.Line1, target.Value.TleData.Line2, target.Value.OrbitalData.OBJECT_NAME);
                                         target.Value.PositionData = SatFunctions.getSatPositionAtTime(tleItem, new EpochTime(DateTime.UtcNow), Sgp4.wgsConstant.WGS_84);
-
-                                        obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
-
                                         target.Value.LastPositionUpdate = DateTime.Now;
+
+                                        obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);                                        
                                     }
                                 );
                             }

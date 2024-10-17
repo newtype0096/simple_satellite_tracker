@@ -104,6 +104,20 @@ namespace satellite_tracker.Models
             private set => SetProperty(ref _mean_motion_ddot, value);
         }
 
+        private string _posData;
+        public string PosData
+        {
+            get => _posData;
+            set => SetProperty(ref _posData, value);
+        }
+
+        private string _velData;
+        public string VelData
+        {
+            get => _velData;
+            set => SetProperty(ref _velData, value);
+        }
+
         private SatelliteCatalogData _catalogData;
         public SatelliteCatalogData CatalogData
         {
@@ -135,6 +149,9 @@ namespace satellite_tracker.Models
                 Bstar = value.OrbitalData.BSTAR;
                 Mean_Motion_Dot = value.OrbitalData.MEAN_MOTION_DOT;
                 Mean_Motion_Ddot = value.OrbitalData.MEAN_MOTION_DDOT;
+
+                PosData = value.PositionData?.getPosDataString();
+                VelData = value.PositionData?.getVelDataString();
 
                 SetProperty(ref _trackingData, value);
             }

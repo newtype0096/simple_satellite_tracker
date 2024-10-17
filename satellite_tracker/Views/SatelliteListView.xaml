@@ -42,6 +42,7 @@
         <DataGrid Grid.Row="1"
                   ItemsSource="{Binding SatelliteInfos}"
                   PreviewKeyDown="DataGrid_PreviewKeyDown"
+                  SelectedItem="{Binding SelectedInfo, UpdateSourceTrigger=PropertyChanged}"
                   SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto"

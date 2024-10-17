@@ -13,7 +13,7 @@ namespace satellite_tracker.Views
         {
             InitializeComponent();
 
-            DataContext = new SatelliteListViewModel();
+            DataContext = SatelliteListViewModel.Default;
         }
 
         private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -21,9 +21,7 @@ namespace satellite_tracker.Views
             if (e.Key == Key.Delete)
             {
                 var dataGrid = (DataGrid)sender;
-
-                var vm = (SatelliteListViewModel)DataContext;
-                vm.RemoveTrackingTargetCommand.Execute(dataGrid.SelectedItem);
+                SatelliteListViewModel.Default.RemoveTrackingTargetCommand.Execute(dataGrid.SelectedItem);
             }
         }
     }

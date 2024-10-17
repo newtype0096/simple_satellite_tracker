@@ -12,6 +12,8 @@ namespace satellite_tracker.ViewModels
 {
     public class SatelliteListViewModel : ObservableObject
     {
+        public static SatelliteListViewModel Default { get; } = new SatelliteListViewModel();
+
         private string _trackingTargetListFileName;
 
         private ObservableCollection<SatelliteInfo> _satelliteInfos = new ObservableCollection<SatelliteInfo>();
@@ -19,6 +21,18 @@ namespace satellite_tracker.ViewModels
         {
             get => _satelliteInfos;
             set => SetProperty(ref _satelliteInfos, value);
+        }
+
+        private SatelliteInfo _selectedInfo;
+        public SatelliteInfo SelectedInfo
+        {
+            get => _selectedInfo;
+            set
+            {
+                PositionDataViewModel.Default.SelectedInfo = value;
+
+                SetProperty(ref _selectedInfo, value);
+            }
         }
 
         public RelayCommand SettingsCommand { get; }

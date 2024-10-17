@@ -45,7 +45,11 @@
                     <ad:LayoutPanel DockHeight="*"
                                     DockWidth="*"
                                     Orientation="Horizontal">
-                        <ad:LayoutDocumentPane ShowHeader="False" />
+                        <ad:LayoutDocumentPane ShowHeader="False">
+                            <ad:LayoutDocument>
+                                <local:MainView />
+                            </ad:LayoutDocument>
+                        </ad:LayoutDocumentPane>
 
                         <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
                             <ad:LayoutAnchorablePane>
