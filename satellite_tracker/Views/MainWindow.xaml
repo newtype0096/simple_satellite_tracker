@@ -39,32 +39,39 @@
             </ad:DockingManager.Theme>
 
             <ad:LayoutRoot>
-                <ad:LayoutPanel Orientation="Horizontal">
-                    <ad:LayoutAnchorablePane DockWidth="300">
-                        <ad:LayoutAnchorable Title="Satellite List" CanDockAsTabbedDocument="False">
+                <ad:LayoutPanel DockHeight="*"
+                                DockWidth="*"
+                                Orientation="Vertical">
+                    <ad:LayoutPanel DockHeight="*"
+                                    DockWidth="*"
+                                    Orientation="Horizontal">
+                        <ad:LayoutDocumentPane ShowHeader="False" />
+
+                        <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
+                            <ad:LayoutAnchorablePane>
+                                <ad:LayoutAnchorable Title="Orbit"
+                                                     CanClose="False"
+                                                     CanDockAsTabbedDocument="False"
+                                                     CanHide="False" />
+                            </ad:LayoutAnchorablePane>
+
+                            <ad:LayoutAnchorablePane>
+                                <ad:LayoutAnchorable Title="3D"
+                                                     CanClose="False"
+                                                     CanDockAsTabbedDocument="False"
+                                                     CanHide="False" />
+                            </ad:LayoutAnchorablePane>
+                        </ad:LayoutAnchorablePaneGroup>
+                    </ad:LayoutPanel>
+
+                    <ad:LayoutAnchorablePane DockHeight="300">
+                        <ad:LayoutAnchorable Title="Satellite Stats"
+                                             CanClose="False"
+                                             CanDockAsTabbedDocument="False"
+                                             CanHide="False">
                             <local:SatelliteListView />
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>
-
-                    <ad:LayoutPanel Orientation="Vertical">
-                        <ad:LayoutPanel Orientation="Horizontal">
-                            <ad:LayoutDocumentPane />
-
-                            <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
-                                <ad:LayoutAnchorablePane>
-                                    <ad:LayoutAnchorable Title="Orbit" CanDockAsTabbedDocument="False" />
-                                </ad:LayoutAnchorablePane>
-
-                                <ad:LayoutAnchorablePane>
-                                    <ad:LayoutAnchorable Title="3D" CanDockAsTabbedDocument="False" />
-                                </ad:LayoutAnchorablePane>
-                            </ad:LayoutAnchorablePaneGroup>
-                        </ad:LayoutPanel>
-
-                        <ad:LayoutAnchorablePane DockHeight="300">
-                            <ad:LayoutAnchorable Title="Stats" CanDockAsTabbedDocument="False" />
-                        </ad:LayoutAnchorablePane>
-                    </ad:LayoutPanel>
                 </ad:LayoutPanel>
             </ad:LayoutRoot>
         </ad:DockingManager>

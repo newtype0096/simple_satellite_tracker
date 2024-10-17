@@ -77,30 +77,30 @@ namespace SatelliteTrackerLib
                     {
                         var apiTryTimeSpan = DateTime.Now - target.Value.LastApiTry;
                         var apiUpdateTimeSpan = DateTime.Now - target.Value.LastApiUpdate;
-                        if (apiUpdateTimeSpan.TotalHours >= 2 && apiTryTimeSpan.TotalSeconds >= 10)
+                        if (apiUpdateTimeSpan.TotalHours >= 2 && apiTryTimeSpan.TotalSeconds >= 30)
                         {
                             target.Value.LastApiTry = DateTime.Now;
 
-                            //Task.Run(() =>
-                            //    {
-                            //        if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
-                            //        {
-                            //            target.Value.OrbitalData = orbitalDataResponse.Data;
-                            //        }
+                            Task.Run(() =>
+                                {
+                                    if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
+                                    {
+                                        target.Value.OrbitalData = orbitalDataResponse.Data;
+                                    }
 
-                            //        if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
-                            //        {
-                            //            target.Value.TleData = tleDataResponse.Data;
-                            //        }
+                                    if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
+                                    {
+                                        target.Value.TleData = tleDataResponse.Data;
+                                    }
 
-                            //        if (target.Value.OrbitalData != null && target.Value.TleData != null)
-                            //        {
-                            //            obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
+                                    if (target.Value.OrbitalData != null && target.Value.TleData != null)
+                                    {
+                                        obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value);
 
-                            //            target.Value.LastApiUpdate = DateTime.Now;
-                            //        }
-                            //    }
-                            //);
+                                        target.Value.LastApiUpdate = DateTime.Now;
+                                    }
+                                }
+                            );
                         }
 
                         if (target.Value.OrbitalData != null && target.Value.TleData != null)

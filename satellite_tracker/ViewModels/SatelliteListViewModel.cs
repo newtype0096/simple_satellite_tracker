@@ -22,12 +22,14 @@ namespace satellite_tracker.ViewModels
         }
 
         public RelayCommand SettingsCommand { get; }
+        public RelayCommand<SatelliteInfo> RemoveTrackingTargetCommand { get; }
 
         public SatelliteListViewModel()
         {
             _trackingTargetListFileName = Path.Combine(GlobalData.Default.CurrentDirectory, "tracking_targets.txt");
 
             SettingsCommand = new RelayCommand(OnSettings);
+            RemoveTrackingTargetCommand = new RelayCommand<SatelliteInfo>(OnRemoveTrackingTargetCommand);
 
             GlobalData.Default.SatelliteTracker.UpdateTrackingDataCallback +=
                 (string norad_cat_id, TrackingData trackingData) =>
@@ -49,14 +51,28 @@ namespace satellite_tracker.ViewModels
             {
                 foreach (var info in vm.TargetSatelliteCatalogInfos)
                 {
-                    GlobalData.Default.SatelliteTracker.AddTrackingTarget(info.Data.NORAD_CAT_ID);
-
                     var infos = SatelliteInfos.Where(x => x.CatalogData.NORAD_CAT_ID == info.Data.NORAD_CAT_ID);
                     if (!infos.Any())
                     {
                         SatelliteInfos.Add(new SatelliteInfo() { CatalogData = info.Data });
+                        GlobalData.Default.SatelliteTracker.AddTrackingTarget(info.Data.NORAD_CAT_ID);
                     }
                 }
+
+                WriteTrackingTargetList();
+            }
+        }
+
+        private void OnRemoveTrackingTargetCommand(SatelliteInfo selectedInfo)
+        {
+            if (selectedInfo == null)
+            {
+                return;
+            }
+
+            if (SatelliteInfos.Remove(selectedInfo))
+            {
+                GlobalData.Default.SatelliteTracker.RemoveTrackingTarget(selectedInfo.Norad_Cat_Id);
 
                 WriteTrackingTargetList();
             }
