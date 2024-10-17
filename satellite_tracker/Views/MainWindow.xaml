@@ -10,8 +10,8 @@
                  xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
                  xmlns:vm="clr-namespace:satellite_tracker.ViewModels"
                  Title="Satellite Tracker"
-                 Width="1366"
-                 Height="768"
+                 Width="1680"
+                 Height="1050"
                  md:DialogServiceViews.IsRegistered="True"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowVM}"
                  NonActiveWindowTitleBrush="Transparent"
@@ -46,7 +46,25 @@
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>
 
-                    <ad:LayoutDocumentPane />
+                    <ad:LayoutPanel Orientation="Vertical">
+                        <ad:LayoutPanel Orientation="Horizontal">
+                            <ad:LayoutDocumentPane />
+
+                            <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
+                                <ad:LayoutAnchorablePane>
+                                    <ad:LayoutAnchorable Title="Orbit" CanDockAsTabbedDocument="False" />
+                                </ad:LayoutAnchorablePane>
+
+                                <ad:LayoutAnchorablePane>
+                                    <ad:LayoutAnchorable Title="3D" CanDockAsTabbedDocument="False" />
+                                </ad:LayoutAnchorablePane>
+                            </ad:LayoutAnchorablePaneGroup>
+                        </ad:LayoutPanel>
+
+                        <ad:LayoutAnchorablePane DockHeight="300">
+                            <ad:LayoutAnchorable Title="Stats" CanDockAsTabbedDocument="False" />
+                        </ad:LayoutAnchorablePane>
+                    </ad:LayoutPanel>
                 </ad:LayoutPanel>
             </ad:LayoutRoot>
         </ad:DockingManager>
