@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SatelliteData.cs" />
+    <Compile Include="OrbitData.cs" />
     <Compile Include="TrackingData.cs" />
     <Compile Include="SatelliteTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

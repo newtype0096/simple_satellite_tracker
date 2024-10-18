@@ -1,6 +1,8 @@
 ﻿using CelesTrakLib.Datas;
 using CommunityToolkit.Mvvm.ComponentModel;
+using One_Sgp4;
 using SatelliteTrackerLib;
+using System.Collections.Generic;
 
 namespace satellite_tracker.Models
 {
@@ -18,6 +20,19 @@ namespace satellite_tracker.Models
         {
             get => _norad_cat_id;
             private set => SetProperty(ref _norad_cat_id, value);
+        }
+
+        private SatelliteCatalogData _catalogData;
+        public SatelliteCatalogData CatalogData
+        {
+            get => _catalogData;
+            set
+            {
+                Name = value.OBJECT_NAME;
+                Norad_Cat_Id = value.NORAD_CAT_ID;
+
+                SetProperty(ref _catalogData, value);
+            }
         }
 
         private string _epoch;
@@ -118,19 +133,6 @@ namespace satellite_tracker.Models
             set => SetProperty(ref _velData, value);
         }
 
-        private SatelliteCatalogData _catalogData;
-        public SatelliteCatalogData CatalogData
-        {
-            get => _catalogData;
-            set
-            {
-                Name = value.OBJECT_NAME;
-                Norad_Cat_Id = value.NORAD_CAT_ID;
-
-                SetProperty(ref _catalogData, value);
-            }
-        }
-
         private TrackingData _trackingData;
         public TrackingData TrackingData
         {
@@ -154,6 +156,25 @@ namespace satellite_tracker.Models
                 VelData = value.PositionData?.getVelDataString();
 
                 SetProperty(ref _trackingData, value);
+            }
+        }
+
+        private List<Coordinate> _coordinates;
+        public List<Coordinate> Coordinates
+        {
+            get => _coordinates;
+            set => SetProperty(ref _coordinates, value);
+        }
+
+        private OrbitData _orbitData;
+        public OrbitData OrbitData
+        {
+            get => _orbitData;
+            set
+            {
+                Coordinates = new List<Coordinate>(value.Coordinates);
+
+                SetProperty(ref _orbitData, value);
             }
         }
     }

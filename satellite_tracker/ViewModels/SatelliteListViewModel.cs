@@ -30,6 +30,7 @@ namespace satellite_tracker.ViewModels
             set
             {
                 PositionDataViewModel.Default.SelectedInfo = value;
+                OrbitViewModel.Default.SelectedInfo = value;
 
                 SetProperty(ref _selectedInfo, value);
             }
@@ -52,6 +53,16 @@ namespace satellite_tracker.ViewModels
                     if (info != null)
                     {
                         info.TrackingData = trackingData;
+                    }
+                };
+
+            GlobalData.Default.SatelliteTracker.UpdateOrbitDataCallback +=
+                (string norad_cat_id, OrbitData orbitData) =>
+                {
+                    var info = SatelliteInfos.FirstOrDefault(x => x.CatalogData.NORAD_CAT_ID == norad_cat_id);
+                    if (info != null)
+                    {
+                        info.OrbitData = orbitData;
                     }
                 };
 

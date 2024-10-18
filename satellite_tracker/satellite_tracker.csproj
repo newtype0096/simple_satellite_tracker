@@ -126,14 +126,19 @@
     <Compile Include="Models\SatelliteCatalogInfo.cs" />
     <Compile Include="Models\SatelliteInfo.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModels\OrbitViewModel.cs" />
     <Compile Include="ViewModels\PositionDataViewModel.cs" />
     <Compile Include="ViewModels\SatelliteSearchWindowViewModel.cs" />
     <Compile Include="Views\Behaviros\DataGridSelectedItemsBehavior.cs" />
     <Compile Include="Views\Controls\ClockControl.xaml.cs">
       <DependentUpon>ClockControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Converters\SizeChangedEventArgConverter.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OrbitView.xaml.cs">
+      <DependentUpon>OrbitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PositionDataView.xaml.cs">
       <DependentUpon>PositionDataView.xaml</DependentUpon>
@@ -178,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OrbitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
