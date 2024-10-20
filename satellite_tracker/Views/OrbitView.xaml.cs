@@ -1,5 +1,4 @@
 ﻿using satellite_tracker.ViewModels;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace satellite_tracker.Views

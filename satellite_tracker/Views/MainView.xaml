@@ -8,10 +8,11 @@
              d:DesignWidth="600"
              mc:Ignorable="d">
     <Grid>
-        <local:OrbitView />
+        <local:OrbitGridView />
 
         <local:PositionDataView Margin="10,0,0,10"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom" />
+                                VerticalAlignment="Bottom"
+                                Visibility="Collapsed" />
     </Grid>
 </UserControl>
