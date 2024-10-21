@@ -130,11 +130,11 @@ namespace SatelliteTrackerLib
                                     var tleItem = ParserTLE.parseTle(target.Value.TrackingData.TleData.Line1, target.Value.TrackingData.TleData.Line2, target.Value.TrackingData.OrbitalData.OBJECT_NAME);
 
                                     EpochTime calcTime = new EpochTime(tleItem.getEpochYear(), tleItem.getEpochDay());
-
                                     EpochTime startTime = new EpochTime(calcTime);
-                                    startTime.addHours(-1);
-
                                     EpochTime endTime = new EpochTime(calcTime);
+
+                                    calcTime.addHours(-1);
+                                    startTime.addHours(-1);
                                     endTime.addHours(1);
 
                                     var sgp4 = new Sgp4(tleItem, Sgp4.wgsConstant.WGS_84);
@@ -145,6 +145,8 @@ namespace SatelliteTrackerLib
                                     {
                                         var satOnGround = SatFunctions.calcSatSubPoint(calcTime, result, Sgp4.wgsConstant.WGS_84);
                                         target.Value.OrbitData.Coordinates.Add(satOnGround);
+
+                                        calcTime.addMinutes(1);
                                     }
 
                                     target.Value.OrbitData.LastUpdate = DateTime.Now;
