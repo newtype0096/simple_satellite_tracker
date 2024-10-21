@@ -61,7 +61,7 @@ namespace satellite_tracker.ViewModels
 
         private void UpdateOrbit()
         {
-            if (SelectedInfo == null)
+            if (SelectedInfo == null || SelectedInfo.Coordinates == null)
             {
                 return;
             }
