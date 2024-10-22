@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using satellite_tracker.Models;
-using SatelliteTrackerLib;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -29,7 +28,7 @@ namespace satellite_tracker.ViewModels
             get => _selectedInfo;
             set
             {
-                PositionDataViewModel.Default.SelectedInfo = value;
+                //PositionDataViewModel.Default.SelectedInfo = value;
                 OrbitViewModel.Default.SelectedInfo = value;
 
                 SetProperty(ref _selectedInfo, value);
@@ -41,28 +40,57 @@ namespace satellite_tracker.ViewModels
 
         public SatelliteListViewModel()
         {
-            _trackingTargetListFileName = Path.Combine(GlobalData.Default.CurrentDirectory, "tracking_targets.txt");
+            _trackingTargetListFileName = Path.Combine(GlobalData.Default.DataDirectory, "tracking_targets.txt");
 
             SettingsCommand = new RelayCommand(OnSettings);
             RemoveTrackingTargetCommand = new RelayCommand<SatelliteInfo>(OnRemoveTrackingTargetCommand);
 
-            GlobalData.Default.SatelliteTracker.UpdateTrackingDataCallback +=
-                (string norad_cat_id, TrackingData trackingData) =>
+            GlobalData.Default.CelesTrak.UpdateGpDataCallback +=
+                (string norad_cat_id, TrackingInfo trackingInfo) =>
                 {
-                    var info = SatelliteInfos.FirstOrDefault(x => x.CatalogData.NORAD_CAT_ID == norad_cat_id);
+                    var info = SatelliteInfos.FirstOrDefault(x => x.SatCatItem.NORAD_CAT_ID == norad_cat_id);
                     if (info != null)
                     {
-                        info.TrackingData = trackingData;
+                        info.Mean_Motion_Dot = trackingInfo.TleItem.getFirstMeanMotion();
+                        info.Mean_Motion_Ddot = trackingInfo.TleItem.getSecondMeanMotion();
+                        info.BSTAR = trackingInfo.TleItem.getDrag();
+                        info.Ephemeris_Type = trackingInfo.TleItem.getEphemeris();
+                        info.Element_Set_No = trackingInfo.TleItem.getSetNumber();
+                        info.Inclination = trackingInfo.TleItem.getInclination();
+                        info.RAAN = trackingInfo.TleItem.getRightAscendingNode();
+                        info.Eccentricity = trackingInfo.TleItem.getEccentriciy();
+                        info.Arg_Of_Pericenter = trackingInfo.TleItem.getPerigee();
+                        info.Mean_Anomaly = trackingInfo.TleItem.getMeanAnomoly();
+                        info.Mean_Motion = trackingInfo.TleItem.getMeanMotion();
+
+                        info.TrackingInfoItem = trackingInfo;
                     }
                 };
 
-            GlobalData.Default.SatelliteTracker.UpdateOrbitDataCallback +=
-                (string norad_cat_id, OrbitData orbitData) =>
+            GlobalData.Default.CelesTrak.UpdatePositionCallback +=
+                (string norad_cat_id, TrackingInfo trackingInfo) =>
                 {
-                    var info = SatelliteInfos.FirstOrDefault(x => x.CatalogData.NORAD_CAT_ID == norad_cat_id);
+                    var info = SatelliteInfos.FirstOrDefault(x => x.SatCatItem.NORAD_CAT_ID == norad_cat_id);
                     if (info != null)
                     {
-                        info.OrbitData = orbitData;
+                        info.TrackingInfoItem = trackingInfo;
+                    }
+                };
+
+            GlobalData.Default.CelesTrak.UpdateCoordinatesCallback +=
+                (string norad_cat_id, TrackingInfo trackingInfo) =>
+                {
+                    var info = SatelliteInfos.FirstOrDefault(x => x.SatCatItem.NORAD_CAT_ID == norad_cat_id);
+                    if (info != null)
+                    {
+                        info.Coordinates = trackingInfo.Coordinates;
+
+                        info.TrackingInfoItem = trackingInfo;
+
+                        if (OrbitViewModel.Default.SelectedInfo?.SatCatItem.NORAD_CAT_ID == norad_cat_id)
+                        {
+                            OrbitViewModel.Default.UpdateOrbit();
+                        }
                     }
                 };
 
@@ -74,13 +102,13 @@ namespace satellite_tracker.ViewModels
             var vm = new SatelliteSearchWindowViewModel();
             if (GlobalData.Default.DialogService.ShowDialog(this, vm) == true)
             {
-                foreach (var info in vm.TargetSatelliteCatalogInfos)
+                foreach (var info in vm.TargetSatelliteInfos)
                 {
-                    var infos = SatelliteInfos.Where(x => x.CatalogData.NORAD_CAT_ID == info.Data.NORAD_CAT_ID);
+                    var infos = SatelliteInfos.Where(x => x.SatCatItem.NORAD_CAT_ID == info.SatCatItem.NORAD_CAT_ID);
                     if (!infos.Any())
                     {
-                        SatelliteInfos.Add(new SatelliteInfo() { CatalogData = info.Data });
-                        GlobalData.Default.SatelliteTracker.AddTrackingTarget(info.Data.NORAD_CAT_ID);
+                        SatelliteInfos.Add(info);
+                        GlobalData.Default.CelesTrak.AddTrackingTarget(info.SatCatItem.NORAD_CAT_ID, info.SatCatItem);
                     }
                 }
 
@@ -97,7 +125,7 @@ namespace satellite_tracker.ViewModels
 
             if (SatelliteInfos.Remove(selectedInfo))
             {
-                GlobalData.Default.SatelliteTracker.RemoveTrackingTarget(selectedInfo.Norad_Cat_Id);
+                GlobalData.Default.CelesTrak.RemoveTrackingTarget(selectedInfo.SatCatItem.NORAD_CAT_ID);
 
                 WriteTrackingTargetList();
             }
@@ -105,7 +133,7 @@ namespace satellite_tracker.ViewModels
 
         private void WriteTrackingTargetList()
         {
-            var catalogDatas = SatelliteInfos.Select(x => x.CatalogData);
+            var catalogDatas = SatelliteInfos.Select(x => x.SatCatItem);
             string jsonString = JsonConvert.SerializeObject(catalogDatas, Formatting.Indented);
 
             File.WriteAllText(_trackingTargetListFileName, jsonString);
@@ -116,14 +144,14 @@ namespace satellite_tracker.ViewModels
             if (File.Exists(_trackingTargetListFileName))
             {
                 string jsonString = File.ReadAllText(_trackingTargetListFileName);
-                var catalogs = JsonConvert.DeserializeObject<ObservableCollection<SatelliteCatalogData>>(jsonString);
-                if (catalogs != null)
+                var satCats = JsonConvert.DeserializeObject<ObservableCollection<SatCat>>(jsonString);
+                if (satCats != null)
                 {
-                    foreach (var data in catalogs)
+                    foreach (var satCat in satCats)
                     {
-                        GlobalData.Default.SatelliteTracker.AddTrackingTarget(data.NORAD_CAT_ID);
+                        GlobalData.Default.CelesTrak.AddTrackingTarget(satCat.NORAD_CAT_ID, satCat);
 
-                        SatelliteInfos.Add(new SatelliteInfo() { CatalogData = data });
+                        SatelliteInfos.Add(new SatelliteInfo() { SatCatItem = satCat });
                     }
                 }
             }

@@ -59,10 +59,11 @@ namespace satellite_tracker.ViewModels
             }
         }
 
-        private void UpdateOrbit()
+        public void UpdateOrbit()
         {
             if (SelectedInfo == null || SelectedInfo.Coordinates == null)
             {
+                OrbitLines = null;
                 return;
             }
 

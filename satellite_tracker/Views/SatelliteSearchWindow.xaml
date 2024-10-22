@@ -69,20 +69,20 @@
 
             <DataGrid Grid.Row="1"
                       ColumnWidth="*"
-                      ItemsSource="{Binding FilteredSatelliteCatalogInfos}">
+                      ItemsSource="{Binding FilteredSatelliteInfos}">
                 <i:Interaction.Behaviors>
-                    <bh:DataGridSelectedItemsBehavior SelectedItems="{Binding TargetSatelliteCatalogInfos}" />
+                    <bh:DataGridSelectedItemsBehavior SelectedItems="{Binding TargetSatelliteInfos}" />
                 </i:Interaction.Behaviors>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Data.OBJECT_ID}" Header="International&#x0a;Designator" />
-                    <DataGridTextColumn Binding="{Binding Data.NORAD_CAT_ID}" Header="NORAD&#x0a;Catalog&#x0a;Number" />
-                    <DataGridTextColumn Binding="{Binding Data.OBJECT_NAME}" Header="Name" />
-                    <DataGridTextColumn Binding="{Binding Data.OWNER}" Header="Source" />
-                    <DataGridTextColumn Binding="{Binding Data.LAUNCH_DATE}" Header="Launch&#x0a;Date" />
-                    <DataGridTextColumn Binding="{Binding Data.LAUNCH_SITE}" Header="Launch&#x0a;Site" />
-                    <DataGridTextColumn Binding="{Binding Data.DECAY_DATE}" Header="Decay&#x0a;Date" />
-                    <DataGridTextColumn Binding="{Binding Data.OPS_STATUS_CODE}" Header="Ops&#x0a;Status" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.OBJECT_ID}" Header="International&#x0a;Designator" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.NORAD_CAT_ID}" Header="NORAD&#x0a;Catalog&#x0a;Number" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.OBJECT_NAME}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.OWNER}" Header="Source" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.LAUNCH_DATE}" Header="Launch&#x0a;Date" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.LAUNCH_SITE}" Header="Launch&#x0a;Site" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.DECAY_DATE}" Header="Decay&#x0a;Date" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.OPS_STATUS_CODE}" Header="Ops&#x0a;Status" />
                     <DataGridTemplateColumn Header="Tracking">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

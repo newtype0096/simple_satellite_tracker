@@ -9,7 +9,7 @@
              d:DesignWidth="1680"
              mc:Ignorable="d">
     <Grid>
-        <controls:WorldMapControl Margin="40" />
+        <!--<controls:WorldMapControl Margin="40" />-->
 
         <Grid Margin="40,0">
             <Grid.ColumnDefinitions>

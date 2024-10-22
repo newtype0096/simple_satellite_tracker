@@ -1,6 +1,6 @@
 ﻿namespace CelesTrakLib.Datas
 {
-    public class SatelliteCatalogData
+    public class SatCat
     {
         public string OBJECT_NAME { get; set; }
         public string OBJECT_ID { get; set; }

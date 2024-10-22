@@ -1,6 +1,12 @@
-﻿namespace CelesTrakLib.Datas
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SQLiteLib.Records
 {
-    public class OrbitalData
+    public class GpData
     {
         public string OBJECT_NAME { get; set; }
         public string OBJECT_ID { get; set; }
@@ -19,5 +25,8 @@
         public string BSTAR { get; set; }
         public string MEAN_MOTION_DOT { get; set; }
         public string MEAN_MOTION_DDOT { get; set; }
+        public string LINE1{ get; set; }
+        public string LINE2 { get; set; }
+        public DateTime UPDATE_DATETIME { get; set; }
     }
 }

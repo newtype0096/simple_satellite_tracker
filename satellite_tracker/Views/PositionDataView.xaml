@@ -51,7 +51,7 @@
 
             <Label Grid.Row="0"
                    VerticalContentAlignment="Center"
-                   Content="{Binding SelectedInfo.Name}" />
+                   Content="{Binding SelectedInfo.SatCat.OBJECT_NAME}" />
 
             <Label Grid.Row="1"
                    VerticalContentAlignment="Center"

@@ -1,162 +1,89 @@
 ﻿using CelesTrakLib.Datas;
 using CommunityToolkit.Mvvm.ComponentModel;
 using One_Sgp4;
-using SatelliteTrackerLib;
 using System.Collections.Generic;
 
 namespace satellite_tracker.Models
 {
     public class SatelliteInfo : ObservableObject
     {
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            private set => SetProperty(ref _name, value);
-        }
+        public bool IsTracking { get; set; }
 
-        private string _norad_cat_id;
-        public string Norad_Cat_Id
-        {
-            get => _norad_cat_id;
-            private set => SetProperty(ref _norad_cat_id, value);
-        }
-
-        private SatelliteCatalogData _catalogData;
-        public SatelliteCatalogData CatalogData
-        {
-            get => _catalogData;
-            set
-            {
-                Name = value.OBJECT_NAME;
-                Norad_Cat_Id = value.NORAD_CAT_ID;
-
-                SetProperty(ref _catalogData, value);
-            }
-        }
-
-        private string _epoch;
-        public string Epoch
-        {
-            get => _epoch;
-            private set => SetProperty(ref _epoch, value);
-        }
-
-        private string _mean_motion;
-        public string Mean_Motion
-        {
-            get => _mean_motion;
-            private set => SetProperty(ref _mean_motion, value);
-        }
-
-        private string _eccentricity;
-        public string Eccentricity
-        {
-            get => _eccentricity;
-            private set => SetProperty(ref _eccentricity, value);
-        }
-
-        private string _inclination;
-        public string Inclination
-        {
-            get => _inclination;
-            private set => SetProperty(ref _inclination, value);
-        }
-
-        private string _ra_of_asc_node;
-        public string Ra_of_Asc_Node
-        {
-            get => _ra_of_asc_node;
-            private set => SetProperty(ref _ra_of_asc_node, value);
-        }
-
-        private string _arg_of_pericenter;
-        public string Arg_of_Pericenter
-        {
-            get => _arg_of_pericenter;
-            private set => SetProperty(ref _arg_of_pericenter, value);
-        }
-
-        private string _mean_anomaly;
-        public string Mean_Anomaly
-        {
-            get => _mean_anomaly;
-            private set => SetProperty(ref _mean_anomaly, value);
-        }
-
-        private string _element_set_no;
-        public string Element_Set_No
-        {
-            get => _element_set_no;
-            private set => SetProperty(ref _element_set_no, value);
-        }
-
-        private string _rev_at_epoch;
-        public string Rev_at_Epoch
-        {
-            get => _rev_at_epoch;
-            private set => SetProperty(ref _rev_at_epoch, value);
-        }
-
-        private string _bstar;
-        public string Bstar
-        {
-            get => _bstar;
-            private set => SetProperty(ref _bstar, value);
-        }
-
-        private string _mean_motion_dot;
-        public string Mean_Motion_Dot
+        private double _mean_motion_dot;
+        public double Mean_Motion_Dot
         {
             get => _mean_motion_dot;
-            private set => SetProperty(ref _mean_motion_dot, value);
+            set => SetProperty(ref _mean_motion_dot, value);
         }
 
-        private string _mean_motion_ddot;
-        public string Mean_Motion_Ddot
+        private double _mean_motion_ddot;
+        public double Mean_Motion_Ddot
         {
             get => _mean_motion_ddot;
-            private set => SetProperty(ref _mean_motion_ddot, value);
+            set => SetProperty(ref _mean_motion_ddot, value);
         }
 
-        private string _posData;
-        public string PosData
+        private double _bstar;
+        public double BSTAR
         {
-            get => _posData;
-            set => SetProperty(ref _posData, value);
+            get => _bstar;
+            set => SetProperty(ref _bstar, value);
         }
 
-        private string _velData;
-        public string VelData
+        private double _ephemeris_type;
+        public double Ephemeris_Type
         {
-            get => _velData;
-            set => SetProperty(ref _velData, value);
+            get => _ephemeris_type;
+            set => SetProperty(ref _ephemeris_type, value);
         }
 
-        private TrackingData _trackingData;
-        public TrackingData TrackingData
+        private double _element_set_no;
+        public double Element_Set_No
         {
-            get => _trackingData;
-            set
-            {
-                Epoch = value.OrbitalData.EPOCH;
-                Mean_Motion = value.OrbitalData.MEAN_MOTION;
-                Eccentricity = value.OrbitalData.ECCENTRICITY;
-                Inclination = value.OrbitalData.INCLINATION;
-                Ra_of_Asc_Node = value.OrbitalData.RA_OF_ASC_NODE;
-                Arg_of_Pericenter = value.OrbitalData.ARG_OF_PERICENTER;
-                Mean_Anomaly = value.OrbitalData.MEAN_ANOMALY;
-                Element_Set_No = value.OrbitalData.ELEMENT_SET_NO;
-                Rev_at_Epoch = value.OrbitalData.REV_AT_EPOCH;
-                Bstar = value.OrbitalData.BSTAR;
-                Mean_Motion_Dot = value.OrbitalData.MEAN_MOTION_DOT;
-                Mean_Motion_Ddot = value.OrbitalData.MEAN_MOTION_DDOT;
+            get => _element_set_no;
+            set => SetProperty(ref _element_set_no, value);
+        }
 
-                PosData = value.PositionData?.getPosDataString();
-                VelData = value.PositionData?.getVelDataString();
+        private double _inclination;
+        public double Inclination
+        {
+            get => _inclination;
+            set => SetProperty(ref _inclination, value);
+        }
 
-                SetProperty(ref _trackingData, value);
-            }
+        private double _raan;
+        public double RAAN
+        {
+            get => _raan;
+            set => SetProperty(ref _raan, value);
+        }
+
+        private double _eccentricity;
+        public double Eccentricity
+        {
+            get => _eccentricity;
+            set => SetProperty(ref _eccentricity, value);
+        }
+
+        private double _arg_of_pericenter;
+        public double Arg_Of_Pericenter
+        {
+            get => _arg_of_pericenter;
+            set => SetProperty(ref _arg_of_pericenter, value);
+        }
+
+        private double _mean_anomaly;
+        public double Mean_Anomaly
+        {
+            get => _mean_anomaly;
+            set => SetProperty(ref _mean_anomaly, value);
+        }
+
+        private double _mean_motion;
+        public double Mean_Motion
+        {
+            get => _mean_motion;
+            set => SetProperty(ref _mean_motion, value);
         }
 
         private List<Coordinate> _coordinates;
@@ -166,16 +93,18 @@ namespace satellite_tracker.Models
             set => SetProperty(ref _coordinates, value);
         }
 
-        private OrbitData _orbitData;
-        public OrbitData OrbitData
+        private SatCat _satCatItem;
+        public SatCat SatCatItem
         {
-            get => _orbitData;
-            set
-            {
-                Coordinates = new List<Coordinate>(value.Coordinates);
+            get => _satCatItem;
+            set => SetProperty(ref _satCatItem, value);
+        }
 
-                SetProperty(ref _orbitData, value);
-            }
+        private TrackingInfo _trackingInfoItem;
+        public TrackingInfo TrackingInfoItem
+        {
+            get => _trackingInfoItem;
+            set => SetProperty(ref _trackingInfoItem, value);
         }
     }
 }

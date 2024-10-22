@@ -27,7 +27,7 @@ namespace SatelliteTrackerLib
 
         public void Start()
         {
-            _trackingThread = new Thread(new ParameterizedThreadStart(TrackingThreadProc));
+            _trackingThread = new Thread(new ParameterizedThreadStart(TrackingThread));
             _trackingThread.Start(this);
         }
 
@@ -37,45 +37,19 @@ namespace SatelliteTrackerLib
             _trackingThread.Join();
         }
 
-        public void AddTrackingTarget(string norad_cat_id)
-        {
-            lock (_cs)
-            {
-                if (!_targets.ContainsKey(norad_cat_id))
-                {
-                    _targets.Add(norad_cat_id, new SatelliteData());
-                }
-            }
-        }
-
-        public void RemoveTrackingTarget(string norad_cat_id)
-        {
-            lock (_cs)
-            {
-                if (_targets.ContainsKey(norad_cat_id))
-                {
-                    _targets.Remove(norad_cat_id);
-                }
-            }
-        }
-
-        public bool IsTrackingTarget(string norad_cat_id)
-        {
-            lock (_cs)
-            {
-                return _targets.ContainsKey(norad_cat_id);
-            }
-        }
-
-        private static void TrackingThreadProc(object param)
+        private static void TrackingThread(object param)
         {
             var obj = (SatelliteTracker)param;
+            obj.TrackingThreadProc();
+        }
 
-            while (!obj._threadExit)
+        private void TrackingThreadProc()
+        {
+            while (!_threadExit)
             {
-                lock (obj._cs)
+                lock (_cs)
                 {
-                    foreach (var target in obj._targets)
+                    foreach (var target in _targets)
                     {
                         var apiTryTimeSpan = DateTime.Now - target.Value.TrackingData.LastApiTry;
                         var apiUpdateTimeSpan = DateTime.Now - target.Value.TrackingData.LastApiUpdate;
@@ -83,26 +57,26 @@ namespace SatelliteTrackerLib
                         {
                             target.Value.TrackingData.LastApiTry = DateTime.Now;
 
-                            Task.Run(() =>
-                            {
-                                if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
-                                {
-                                    target.Value.TrackingData.OrbitalData = orbitalDataResponse.Data;
-                                }
+                            //Task.Run(() =>
+                            //{
+                            //    if (CelesTrak.Default.GetOribitalData(target.Key, out var orbitalDataResponse))
+                            //    {
+                            //        target.Value.TrackingData.OrbitalData = orbitalDataResponse.Data;
+                            //    }
 
-                                if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
-                                {
-                                    target.Value.TrackingData.TleData = tleDataResponse.Data;
-                                }
+                            //    if (CelesTrak.Default.GetTleData(target.Key, out var tleDataResponse))
+                            //    {
+                            //        target.Value.TrackingData.TleData = tleDataResponse.Data;
+                            //    }
 
-                                if (target.Value.TrackingData.OrbitalData != null && target.Value.TrackingData.TleData != null)
-                                {
-                                    target.Value.TrackingData.LastApiUpdate = DateTime.Now;
-                                    target.Value.OrbitData.LastUpdate = DateTime.MinValue;
+                            //    if (target.Value.TrackingData.OrbitalData != null && target.Value.TrackingData.TleData != null)
+                            //    {
+                            //        target.Value.TrackingData.LastApiUpdate = DateTime.Now;
+                            //        target.Value.OrbitData.LastUpdate = DateTime.MinValue;
 
-                                    obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value.TrackingData);
-                                }
-                            });
+                            //        obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value.TrackingData);
+                            //    }
+                            //});
                         }
 
                         if (target.Value.TrackingData.OrbitalData != null && target.Value.TrackingData.TleData != null)
@@ -110,49 +84,49 @@ namespace SatelliteTrackerLib
                             var positionTimeSpan = DateTime.Now - target.Value.TrackingData.LastPositionUpdate;
                             if (positionTimeSpan.TotalSeconds >= 5 && target.Value.TrackingData.LastApiUpdate != DateTime.MinValue)
                             {
-                                Task.Run(() =>
-                                {
-                                    var tleItem = ParserTLE.parseTle(target.Value.TrackingData.TleData.Line1, target.Value.TrackingData.TleData.Line2, target.Value.TrackingData.OrbitalData.OBJECT_NAME);
-                                    target.Value.TrackingData.PositionData = SatFunctions.getSatPositionAtTime(tleItem, new EpochTime(DateTime.UtcNow), Sgp4.wgsConstant.WGS_84);
-                                    target.Value.TrackingData.LastPositionUpdate = DateTime.Now;
+                                //Task.Run(() =>
+                                //{
+                                //    var tleItem = ParserTLE.parseTle(target.Value.TrackingData.TleData.Line1, target.Value.TrackingData.TleData.Line2, target.Value.TrackingData.OrbitalData.OBJECT_NAME);
+                                //    target.Value.TrackingData.PositionData = SatFunctions.getSatPositionAtTime(tleItem, new EpochTime(DateTime.UtcNow), Sgp4.wgsConstant.WGS_84);
+                                //    target.Value.TrackingData.LastPositionUpdate = DateTime.Now;
 
-                                    obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value.TrackingData);
-                                });
+                                //    obj.UpdateTrackingDataCallback?.Invoke(target.Key, target.Value.TrackingData);
+                                //});
                             }
 
                             var simulationTimeSpan = DateTime.Now - target.Value.OrbitData.LastUpdate;
                             if (simulationTimeSpan.TotalMinutes >= 60)
                             {
-                                Task.Run(() =>
-                                {
-                                    target.Value.OrbitData.Coordinates.Clear();
+                                //Task.Run(() =>
+                                //{
+                                //    target.Value.OrbitData.Coordinates.Clear();
 
-                                    var tleItem = ParserTLE.parseTle(target.Value.TrackingData.TleData.Line1, target.Value.TrackingData.TleData.Line2, target.Value.TrackingData.OrbitalData.OBJECT_NAME);
+                                //    var tleItem = ParserTLE.parseTle(target.Value.TrackingData.TleData.Line1, target.Value.TrackingData.TleData.Line2, target.Value.TrackingData.OrbitalData.OBJECT_NAME);
 
-                                    EpochTime calcTime = new EpochTime(tleItem.getEpochYear(), tleItem.getEpochDay());
-                                    EpochTime startTime = new EpochTime(calcTime);
-                                    EpochTime endTime = new EpochTime(calcTime);
+                                //    EpochTime calcTime = new EpochTime(tleItem.getEpochYear(), tleItem.getEpochDay());
+                                //    EpochTime startTime = new EpochTime(calcTime);
+                                //    EpochTime endTime = new EpochTime(calcTime);
 
-                                    calcTime.addHours(-1);
-                                    startTime.addHours(-1);
-                                    endTime.addHours(1);
+                                //    calcTime.addHours(-1);
+                                //    startTime.addHours(-1);
+                                //    endTime.addHours(1);
 
-                                    var sgp4 = new Sgp4(tleItem, Sgp4.wgsConstant.WGS_84);
-                                    sgp4.runSgp4Cal(startTime, endTime, 1);
+                                //    var sgp4 = new Sgp4(tleItem, Sgp4.wgsConstant.WGS_84);
+                                //    sgp4.runSgp4Cal(startTime, endTime, 1);
 
-                                    var results = sgp4.getResults();
-                                    foreach (var result in results)
-                                    {
-                                        var satOnGround = SatFunctions.calcSatSubPoint(calcTime, result, Sgp4.wgsConstant.WGS_84);
-                                        target.Value.OrbitData.Coordinates.Add(satOnGround);
+                                //    var results = sgp4.getResults();
+                                //    foreach (var result in results)
+                                //    {
+                                //        var satOnGround = SatFunctions.calcSatSubPoint(calcTime, result, Sgp4.wgsConstant.WGS_84);
+                                //        target.Value.OrbitData.Coordinates.Add(satOnGround);
 
-                                        calcTime.addMinutes(1);
-                                    }
+                                //        calcTime.addMinutes(1);
+                                //    }
 
-                                    target.Value.OrbitData.LastUpdate = DateTime.Now;
+                                //    target.Value.OrbitData.LastUpdate = DateTime.Now;
 
-                                    obj.UpdateOrbitDataCallback?.Invoke(target.Key, target.Value.OrbitData);
-                                });
+                                //    obj.UpdateOrbitDataCallback?.Invoke(target.Key, target.Value.OrbitData);
+                                //});
                             }
                         }
                     }

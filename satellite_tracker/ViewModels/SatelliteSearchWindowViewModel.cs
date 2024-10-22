@@ -12,7 +12,7 @@ namespace satellite_tracker.ViewModels
 {
     public class SatelliteSearchWindowViewModel : ObservableObject, IModalDialogViewModel
     {
-        private List<SatelliteCatalogInfo> _satelliteCatalogDatas = new List<SatelliteCatalogInfo>();
+        private List<SatelliteInfo> _satelliteInfos = new List<SatelliteInfo>();
 
         private bool? _dialogResult;
         public bool? DialogResult
@@ -71,18 +71,18 @@ namespace satellite_tracker.ViewModels
             set => SetProperty(ref _searchText, value.ToUpper());
         }
 
-        private ObservableCollection<SatelliteCatalogInfo> _filteredSatelliteCatalogsInfos;
-        public ObservableCollection<SatelliteCatalogInfo> FilteredSatelliteCatalogInfos
+        private ObservableCollection<SatelliteInfo> _filteredSatelliteInfos;
+        public ObservableCollection<SatelliteInfo> FilteredSatelliteInfos
         {
-            get => _filteredSatelliteCatalogsInfos;
-            set => SetProperty(ref _filteredSatelliteCatalogsInfos, value);
+            get => _filteredSatelliteInfos;
+            set => SetProperty(ref _filteredSatelliteInfos, value);
         }
 
-        private List<SatelliteCatalogInfo> _targetSatelliteCatalogInfos = new List<SatelliteCatalogInfo>();
-        public List<SatelliteCatalogInfo> TargetSatelliteCatalogInfos
+        private List<SatelliteInfo> _targetSatelliteInfos = new List<SatelliteInfo>();
+        public List<SatelliteInfo> TargetSatelliteInfos
         {
-            get => _targetSatelliteCatalogInfos;
-            set => SetProperty(ref _targetSatelliteCatalogInfos, value);
+            get => _targetSatelliteInfos;
+            set => SetProperty(ref _targetSatelliteInfos, value);
         }
 
         public RelayCommand InitDialogCommand { get; }
@@ -121,42 +121,42 @@ namespace satellite_tracker.ViewModels
 
         private void LoadSatcat()
         {
-            if (CelesTrak.Default.GetSatelliteCatalogs(out var response))
+            if (GlobalData.Default.CelesTrak.GetSatCats(out var satCats))
             {
-                foreach (var satcat in response.SatelliteCatalogs)
+                foreach (var satCat in satCats)
                 {
-                    var satcatInfo = new SatelliteCatalogInfo();
-                    satcatInfo.Data = satcat;
-                    satcatInfo.IsTracking = GlobalData.Default.SatelliteTracker.IsTrackingTarget(satcat.NORAD_CAT_ID);
+                    var satInfo = new SatelliteInfo();
+                    satInfo.SatCatItem = satCat;
+                    satInfo.IsTracking = GlobalData.Default.CelesTrak.IsTrackingTarget(satCat.NORAD_CAT_ID);
 
-                    _satelliteCatalogDatas.Add(satcatInfo);
+                    _satelliteInfos.Add(satInfo);
                 }
             }
         }
 
         public void FilterSatCat()
         {
-            if (_satelliteCatalogDatas == null)
+            if (_satelliteInfos == null)
             {
                 return;
             }
 
-            var checkBoxResult = _satelliteCatalogDatas
-                .Where(x => IsOnOrbit ? x.Data.OPS_STATUS_CODE != "D" : true)
-                .Where(x => IsActive ? x.Data.OPS_STATUS_CODE == "+" || x.Data.OPS_STATUS_CODE == "P" : true)
-                .Where(x => IsPayload ? x.Data.OBJECT_TYPE == "PAY" : true);
+            var checkBoxResult = _satelliteInfos
+                .Where(x => IsOnOrbit ? x.SatCatItem.OPS_STATUS_CODE != "D" : true)
+                .Where(x => IsActive ? x.SatCatItem.OPS_STATUS_CODE == "+" || x.SatCatItem.OPS_STATUS_CODE == "P" : true)
+                .Where(x => IsPayload ? x.SatCatItem.OBJECT_TYPE == "PAY" : true);
 
             var searchResult = checkBoxResult.Where(
-                x => x.Data.OBJECT_ID.ToUpper().Contains(SearchText) ||
-                x.Data.NORAD_CAT_ID.ToUpper().Contains(SearchText) ||
-                x.Data.OBJECT_NAME.ToUpper().Contains(SearchText) ||
-                x.Data.OWNER.ToUpper().Contains(SearchText) ||
-                x.Data.LAUNCH_DATE.ToUpper().Contains(SearchText) ||
-                x.Data.LAUNCH_SITE.ToUpper().Contains(SearchText) ||
-                x.Data.DECAY_DATE.ToUpper().Contains(SearchText) ||
-                x.Data.OPS_STATUS_CODE.ToUpper().Contains(SearchText));
+                x => x.SatCatItem.OBJECT_ID.ToUpper().Contains(SearchText) ||
+                x.SatCatItem.NORAD_CAT_ID.ToUpper().Contains(SearchText) ||
+                x.SatCatItem.OBJECT_NAME.ToUpper().Contains(SearchText) ||
+                x.SatCatItem.OWNER.ToUpper().Contains(SearchText) ||
+                x.SatCatItem.LAUNCH_DATE.ToUpper().Contains(SearchText) ||
+                x.SatCatItem.LAUNCH_SITE.ToUpper().Contains(SearchText) ||
+                x.SatCatItem.DECAY_DATE.ToUpper().Contains(SearchText) ||
+                x.SatCatItem.OPS_STATUS_CODE.ToUpper().Contains(SearchText));
 
-            FilteredSatelliteCatalogInfos = new ObservableCollection<SatelliteCatalogInfo>(searchResult);
+            FilteredSatelliteInfos = new ObservableCollection<SatelliteInfo>(searchResult);
         }
     }
 }
