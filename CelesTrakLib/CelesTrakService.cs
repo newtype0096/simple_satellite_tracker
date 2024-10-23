@@ -157,7 +157,7 @@ namespace CelesTrakLib
                         }
 
                         var positionTimeSpan = DateTime.Now - target.Value.LastPositionUpdateTime;
-                        if (positionTimeSpan.TotalSeconds >= 5 && target.Value.TleItem != null)
+                        if (positionTimeSpan.TotalSeconds >= 1 && target.Value.TleItem != null)
                         {
                             EpochTime epochTime = new EpochTime(DateTime.UtcNow);
 
