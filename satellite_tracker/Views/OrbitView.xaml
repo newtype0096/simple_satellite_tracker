@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="satellite_tracker.Views.OrbitView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:satellite_tracker.Views.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:satellite_tracker.Views"
@@ -19,23 +20,7 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <ItemsControl ItemsSource="{Binding OrbitLines}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Line Stroke="Gray"
-                          X1="{Binding X1}"
-                          X2="{Binding X2}"
-                          Y1="{Binding Y1}"
-                          Y2="{Binding Y2}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <controls:OrbitLineControl x:Name="OrbitLineControl" />
 
         <Canvas Visibility="{Binding IsGpMarkerVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Ellipse Canvas.Left="{Binding GpMarkerLeft}"

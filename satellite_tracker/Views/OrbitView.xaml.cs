@@ -18,6 +18,7 @@ namespace satellite_tracker.Views
             {
                 OrbitViewModel.Default.WindowWidth = ActualWidth;
                 OrbitViewModel.Default.WindowHeight = ActualHeight;
+                OrbitViewModel.Default.OrbitLineControl = OrbitLineControl;
             };
         }
     }

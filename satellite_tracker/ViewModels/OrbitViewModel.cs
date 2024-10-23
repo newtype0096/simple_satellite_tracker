@@ -1,23 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using satellite_tracker.Models;
+using satellite_tracker.Views.Controls;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace satellite_tracker.ViewModels
 {
     public class OrbitViewModel : ObservableObject
     {
-        public class OrbitLine
-        {
-            public int X1 { get; set; }
-            public int Y1 { get; set; }
-            public int X2 { get; set; }
-            public int Y2 { get; set; }
-        }
-
         public static OrbitViewModel Default { get; } = new OrbitViewModel();
+
+        public OrbitLineControl OrbitLineControl { get; set; }
 
         public double WindowWidth { get; set; } = 0;
         public double WindowHeight { get; set; } = 0;
@@ -59,13 +52,6 @@ namespace satellite_tracker.ViewModels
             }
         }
 
-        private ObservableCollection<OrbitLine> _orbitLines;
-        public ObservableCollection<OrbitLine> OrbitLines
-        {
-            get => _orbitLines;
-            set => SetProperty(ref _orbitLines, value);
-        }
-
         public RelayCommand<(double, double)?> SizeCommand { get; }
 
         public OrbitViewModel()
@@ -87,13 +73,13 @@ namespace satellite_tracker.ViewModels
 
         public void UpdateOrbit()
         {
+            OrbitLineControl?.ClearOrbitLine();
+
             if (SelectedInfo == null || SelectedInfo.TrackingInfoItem == null || SelectedInfo.TrackingInfoItem.Coordinates == null)
             {
-                OrbitLines = null;
                 return;
             }
 
-            var orbitLines = new List<OrbitLine>();
             int oldX = 0, oldY = 0;
 
             foreach (var coordinate in SelectedInfo.TrackingInfoItem.Coordinates)
@@ -105,15 +91,13 @@ namespace satellite_tracker.ViewModels
                 {
                     if (oldX != 0 && oldY != 0)
                     {
-                        orbitLines.Add(new OrbitLine() { X1 = oldX, Y1 = oldY, X2 = x, Y2 = y });
+                        OrbitLineControl?.AddOrbitLine(oldX, oldY, x, y);
                     }
                 }
 
                 oldX = x;
                 oldY = y;
             }
-
-            OrbitLines = new ObservableCollection<OrbitLine>(orbitLines);
         }
 
         public void UpdateGp()
