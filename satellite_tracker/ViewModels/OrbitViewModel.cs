@@ -22,6 +22,30 @@ namespace satellite_tracker.ViewModels
         public double WindowWidth { get; set; } = 0;
         public double WindowHeight { get; set; } = 0;
 
+        private bool _isGpMarkerVisible = false;
+        public bool IsGpMarkerVisible
+        {
+            get => _isGpMarkerVisible;
+            set => SetProperty(ref _isGpMarkerVisible, value);
+        }
+
+        private int _gpMarkerLeft;
+        public int GpMarkerLeft
+        {
+            get => _gpMarkerLeft;
+            set => SetProperty(ref _gpMarkerLeft, value);
+        }
+
+        private int _gpMarkerTop;
+        public int GpMarkerTop
+        {
+            get => _gpMarkerTop;
+            set => SetProperty(ref _gpMarkerTop, value);
+        }
+
+        public int GpMarkerWidth { get; } = 10;
+        public int GpMarkerHeight { get; } = 10;
+
         private SatelliteInfo _selectedInfo;
         public SatelliteInfo SelectedInfo
         {
@@ -31,6 +55,7 @@ namespace satellite_tracker.ViewModels
                 SetProperty(ref _selectedInfo, value);
 
                 UpdateOrbit();
+                UpdateGp();
             }
         }
 
@@ -56,12 +81,13 @@ namespace satellite_tracker.ViewModels
                 WindowHeight = size.Value.Item2;
 
                 UpdateOrbit();
+                UpdateGp();
             }
         }
 
         public void UpdateOrbit()
         {
-            if (SelectedInfo == null || SelectedInfo.Coordinates == null)
+            if (SelectedInfo == null || SelectedInfo.TrackingInfoItem == null || SelectedInfo.TrackingInfoItem.Coordinates == null)
             {
                 OrbitLines = null;
                 return;
@@ -70,7 +96,7 @@ namespace satellite_tracker.ViewModels
             var orbitLines = new List<OrbitLine>();
             int oldX = 0, oldY = 0;
 
-            foreach (var coordinate in SelectedInfo.Coordinates)
+            foreach (var coordinate in SelectedInfo.TrackingInfoItem.Coordinates)
             {
                 int x = (int)((coordinate.getLongitude() + 180.0) * (WindowWidth / 360.0));
                 int y = (int)((90.0 - coordinate.getLatitude()) * (WindowHeight / 180.0));
@@ -88,6 +114,24 @@ namespace satellite_tracker.ViewModels
             }
 
             OrbitLines = new ObservableCollection<OrbitLine>(orbitLines);
+        }
+
+        public void UpdateGp()
+        {
+            if (SelectedInfo == null || SelectedInfo.TrackingInfoItem == null || SelectedInfo.TrackingInfoItem.CoordinateItem == null)
+            {
+                IsGpMarkerVisible = false;
+                return;
+            }
+
+            var coordinate = SelectedInfo.TrackingInfoItem.CoordinateItem;
+            int x = (int)((coordinate.getLongitude() + 180.0) * (WindowWidth / 360.0));
+            int y = (int)((90.0 - coordinate.getLatitude()) * (WindowHeight / 180.0));
+
+            GpMarkerLeft = x - (GpMarkerWidth / 2);
+            GpMarkerTop = y - (GpMarkerHeight / 2);
+
+            IsGpMarkerVisible = true;
         }
     }
 }

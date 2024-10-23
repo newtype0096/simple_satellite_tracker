@@ -74,6 +74,11 @@ namespace satellite_tracker.ViewModels
                     if (info != null)
                     {
                         info.TrackingInfoItem = trackingInfo;
+
+                        if (OrbitViewModel.Default.SelectedInfo?.SatCatItem.NORAD_CAT_ID == norad_cat_id)
+                        {
+                            OrbitViewModel.Default.UpdateGp();
+                        }
                     }
                 };
 
@@ -83,8 +88,6 @@ namespace satellite_tracker.ViewModels
                     var info = SatelliteInfos.FirstOrDefault(x => x.SatCatItem.NORAD_CAT_ID == norad_cat_id);
                     if (info != null)
                     {
-                        info.Coordinates = trackingInfo.Coordinates;
-
                         info.TrackingInfoItem = trackingInfo;
 
                         if (OrbitViewModel.Default.SelectedInfo?.SatCatItem.NORAD_CAT_ID == norad_cat_id)

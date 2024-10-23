@@ -86,13 +86,6 @@ namespace satellite_tracker.Models
             set => SetProperty(ref _mean_motion, value);
         }
 
-        private List<Coordinate> _coordinates;
-        public List<Coordinate> Coordinates
-        {
-            get => _coordinates;
-            set => SetProperty(ref _coordinates, value);
-        }
-
         private SatCat _satCatItem;
         public SatCat SatCatItem
         {

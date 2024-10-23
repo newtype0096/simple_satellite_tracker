@@ -159,7 +159,10 @@ namespace CelesTrakLib
                         var positionTimeSpan = DateTime.Now - target.Value.LastPositionUpdateTime;
                         if (positionTimeSpan.TotalSeconds >= 5 && target.Value.TleItem != null)
                         {
-                            target.Value.Sgp4DataItem = SatFunctions.getSatPositionAtTime(target.Value.TleItem, new EpochTime(DateTime.UtcNow), Sgp4.wgsConstant.WGS_84);
+                            EpochTime epochTime = new EpochTime(DateTime.UtcNow);
+
+                            target.Value.Sgp4DataItem = SatFunctions.getSatPositionAtTime(target.Value.TleItem, epochTime, Sgp4.wgsConstant.WGS_84);
+                            target.Value.CoordinateItem = SatFunctions.calcSatSubPoint(epochTime, target.Value.Sgp4DataItem, Sgp4.wgsConstant.WGS_84);
                             target.Value.LastPositionUpdateTime = DateTime.Now;
 
                             UpdatePositionCallback?.Invoke(target.Key, target.Value);
@@ -170,17 +173,20 @@ namespace CelesTrakLib
                         {
                             EpochTime startTime = new EpochTime(DateTime.UtcNow.AddHours(-1.5));
                             EpochTime stopTime = new EpochTime(DateTime.UtcNow.AddHours(1.5));
+                            EpochTime calcTime = new EpochTime(startTime);
 
                             var sgp4Propagator = new Sgp4(target.Value.TleItem, Sgp4.wgsConstant.WGS_84);
-                            sgp4Propagator.runSgp4Cal(startTime, stopTime, 1 / 3.0);
+                            sgp4Propagator.runSgp4Cal(startTime, stopTime, 1 / 30.0);
 
                             target.Value.Coordinates.Clear();
 
                             var results = sgp4Propagator.getResults();
                             foreach (var result in results)
                             {
-                                var coordinate = SatFunctions.calcSatSubPoint(startTime, result, Sgp4.wgsConstant.WGS_84);
+                                var coordinate = SatFunctions.calcSatSubPoint(calcTime, result, Sgp4.wgsConstant.WGS_84);
                                 target.Value.Coordinates.Add(coordinate);
+
+                                calcTime.addTick(2);
                             }
 
                             target.Value.LastCoordinatesUpdateTime = DateTime.Now;

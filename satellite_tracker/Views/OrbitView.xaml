@@ -18,21 +18,32 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <ItemsControl ItemsSource="{Binding OrbitLines}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <Canvas />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
+    <Grid>
+        <ItemsControl ItemsSource="{Binding OrbitLines}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
 
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Line Stroke="Gray"
-                      X1="{Binding X1}"
-                      X2="{Binding X2}"
-                      Y1="{Binding Y1}"
-                      Y2="{Binding Y2}" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Line Stroke="Gray"
+                          X1="{Binding X1}"
+                          X2="{Binding X2}"
+                          Y1="{Binding Y1}"
+                          Y2="{Binding Y2}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Canvas Visibility="{Binding IsGpMarkerVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Ellipse Canvas.Left="{Binding GpMarkerLeft}"
+                     Canvas.Top="{Binding GpMarkerTop}"
+                     Width="{Binding GpMarkerWidth}"
+                     Height="{Binding GpMarkerHeight}"
+                     Fill="DeepPink"
+                     Stroke="DeepPink" />
+        </Canvas>
+    </Grid>
 </UserControl>
