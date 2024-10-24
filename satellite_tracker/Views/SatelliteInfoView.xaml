@@ -11,14 +11,40 @@
              mc:Ignorable="d">
     <DataGrid ColumnHeaderHeight="0"
               ColumnWidth="*"
-              ItemsSource="{Binding SatelliteInfos}"
-              SelectionMode="Single">
+              ItemsSource="{Binding SatelliteInfos}">
+        <DataGrid.Resources>
+            <Style TargetType="{x:Type DataGridRow}">
+                <Setter Property="Background" Value="Transparent" />
+
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type DataGridCell}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Foreground" Value="White" />
+
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.Resources>
+
         <DataGrid.Columns>
             <DataGridTextColumn Binding="{Binding Name}"
-                                CellStyle="{StaticResource PropertyCell}"
+                                ElementStyle="{StaticResource PropertyCell}"
                                 Header="Name" />
+
             <DataGridTextColumn Binding="{Binding Data}"
-                                CellStyle="{StaticResource PropertyCell}"
+                                ElementStyle="{StaticResource PropertyCell}"
                                 Header="Data" />
         </DataGrid.Columns>
     </DataGrid>

@@ -28,9 +28,10 @@
         <Setter Property="BorderThickness" Value="0" />
     </Style>
 
-    <Style x:Key="PropertyCell"
-           BasedOn="{StaticResource {x:Type DataGridCell}}"
-           TargetType="{x:Type DataGridCell}">
-        <Setter Property="TextBlock.TextAlignment" Value="Left" />
+    <Style x:Key="PropertyCell" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="0,5" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Left" />
     </Style>
 </ResourceDictionary>
