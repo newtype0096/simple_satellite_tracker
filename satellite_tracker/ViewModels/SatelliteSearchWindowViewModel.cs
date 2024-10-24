@@ -12,7 +12,7 @@ namespace satellite_tracker.ViewModels
 {
     public class SatelliteSearchWindowViewModel : ObservableObject, IModalDialogViewModel
     {
-        private List<SatelliteInfo> _satelliteInfos = new List<SatelliteInfo>();
+        private List<Satellite> _satellites = new List<Satellite>();
 
         private bool? _dialogResult;
         public bool? DialogResult
@@ -71,18 +71,18 @@ namespace satellite_tracker.ViewModels
             set => SetProperty(ref _searchText, value.ToUpper());
         }
 
-        private ObservableCollection<SatelliteInfo> _filteredSatelliteInfos;
-        public ObservableCollection<SatelliteInfo> FilteredSatelliteInfos
+        private ObservableCollection<Satellite> _filteredSatellites;
+        public ObservableCollection<Satellite> FilteredSatellites
         {
-            get => _filteredSatelliteInfos;
-            set => SetProperty(ref _filteredSatelliteInfos, value);
+            get => _filteredSatellites;
+            set => SetProperty(ref _filteredSatellites, value);
         }
 
-        private List<SatelliteInfo> _targetSatelliteInfos = new List<SatelliteInfo>();
-        public List<SatelliteInfo> TargetSatelliteInfos
+        private List<Satellite> _targetSatellites = new List<Satellite>();
+        public List<Satellite> TargetSatellites
         {
-            get => _targetSatelliteInfos;
-            set => SetProperty(ref _targetSatelliteInfos, value);
+            get => _targetSatellites;
+            set => SetProperty(ref _targetSatellites, value);
         }
 
         public RelayCommand InitDialogCommand { get; }
@@ -125,23 +125,23 @@ namespace satellite_tracker.ViewModels
             {
                 foreach (var satCat in satCats)
                 {
-                    var satInfo = new SatelliteInfo();
-                    satInfo.SatCatItem = satCat;
-                    satInfo.IsTracking = GlobalData.Default.CelesTrak.IsTrackingTarget(satCat.NORAD_CAT_ID);
+                    var sat = new Satellite();
+                    sat.SatCatItem = satCat;
+                    sat.IsTracking = GlobalData.Default.CelesTrak.IsTrackingTarget(satCat.NORAD_CAT_ID);
 
-                    _satelliteInfos.Add(satInfo);
+                    _satellites.Add(sat);
                 }
             }
         }
 
         public void FilterSatCat()
         {
-            if (_satelliteInfos == null)
+            if (_satellites == null)
             {
                 return;
             }
 
-            var checkBoxResult = _satelliteInfos
+            var checkBoxResult = _satellites
                 .Where(x => IsOnOrbit ? x.SatCatItem.OPS_STATUS_CODE != "D" : true)
                 .Where(x => IsActive ? x.SatCatItem.OPS_STATUS_CODE == "+" || x.SatCatItem.OPS_STATUS_CODE == "P" : true)
                 .Where(x => IsPayload ? x.SatCatItem.OBJECT_TYPE == "PAY" : true);
@@ -156,7 +156,7 @@ namespace satellite_tracker.ViewModels
                 x.SatCatItem.DECAY_DATE.ToUpper().Contains(SearchText) ||
                 x.SatCatItem.OPS_STATUS_CODE.ToUpper().Contains(SearchText));
 
-            FilteredSatelliteInfos = new ObservableCollection<SatelliteInfo>(searchResult);
+            FilteredSatellites = new ObservableCollection<Satellite>(searchResult);
         }
     }
 }

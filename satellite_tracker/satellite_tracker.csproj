@@ -139,10 +139,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="GlobalData.cs" />
+    <Compile Include="Models\Satellite.cs" />
     <Compile Include="Models\SatelliteInfo.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\OrbitViewModel.cs" />
-    <Compile Include="ViewModels\PositionDataViewModel.cs" />
+    <Compile Include="ViewModels\SatelliteInfoViewModel.cs" />
     <Compile Include="ViewModels\SatelliteSearchWindowViewModel.cs" />
     <Compile Include="Views\Behaviros\DataGridSelectedItemsBehavior.cs" />
     <Compile Include="Views\Controls\ClockControl.xaml.cs">
@@ -164,8 +165,8 @@
     <Compile Include="Views\OrbitView.xaml.cs">
       <DependentUpon>OrbitView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PositionDataView.xaml.cs">
-      <DependentUpon>PositionDataView.xaml</DependentUpon>
+    <Compile Include="Views\SatelliteInfoView.xaml.cs">
+      <DependentUpon>SatelliteInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SatelliteSearchWindow.xaml.cs">
       <DependentUpon>SatelliteSearchWindow.xaml</DependentUpon>
@@ -226,7 +227,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PositionDataView.xaml">
+    <Page Include="Views\SatelliteInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

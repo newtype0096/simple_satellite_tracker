@@ -39,13 +39,13 @@ namespace satellite_tracker.ViewModels
         public int GpMarkerWidth { get; } = 10;
         public int GpMarkerHeight { get; } = 10;
 
-        private SatelliteInfo _selectedInfo;
-        public SatelliteInfo SelectedInfo
+        private Satellite _selectedSat;
+        public Satellite SelectedSat
         {
-            get => _selectedInfo;
+            get => _selectedSat;
             set
             {
-                SetProperty(ref _selectedInfo, value);
+                SetProperty(ref _selectedSat, value);
 
                 UpdateOrbit();
                 UpdateGp();
@@ -75,14 +75,14 @@ namespace satellite_tracker.ViewModels
         {
             OrbitLineControl?.ClearOrbitLine();
 
-            if (SelectedInfo == null || SelectedInfo.TrackingInfoItem == null || SelectedInfo.TrackingInfoItem.Coordinates == null)
+            if (SelectedSat == null || SelectedSat.TrackingInfoItem == null || SelectedSat.TrackingInfoItem.Coordinates == null)
             {
                 return;
             }
 
             int oldX = 0, oldY = 0;
 
-            foreach (var coordinate in SelectedInfo.TrackingInfoItem.Coordinates)
+            foreach (var coordinate in SelectedSat.TrackingInfoItem.Coordinates)
             {
                 int x = (int)((coordinate.getLongitude() + 180.0) * (WindowWidth / 360.0));
                 int y = (int)((90.0 - coordinate.getLatitude()) * (WindowHeight / 180.0));
@@ -102,13 +102,13 @@ namespace satellite_tracker.ViewModels
 
         public void UpdateGp()
         {
-            if (SelectedInfo == null || SelectedInfo.TrackingInfoItem == null || SelectedInfo.TrackingInfoItem.CoordinateItem == null)
+            if (SelectedSat == null || SelectedSat.TrackingInfoItem == null || SelectedSat.TrackingInfoItem.CoordinateItem == null)
             {
                 IsGpMarkerVisible = false;
                 return;
             }
 
-            var coordinate = SelectedInfo.TrackingInfoItem.CoordinateItem;
+            var coordinate = SelectedSat.TrackingInfoItem.CoordinateItem;
             int x = (int)((coordinate.getLongitude() + 180.0) * (WindowWidth / 360.0));
             int y = (int)((90.0 - coordinate.getLatitude()) * (WindowHeight / 180.0));
 

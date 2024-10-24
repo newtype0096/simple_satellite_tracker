@@ -40,9 +40,9 @@
         </Border>
 
         <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding SatelliteInfos}"
+                  ItemsSource="{Binding Satellites}"
                   PreviewKeyDown="DataGrid_PreviewKeyDown"
-                  SelectedItem="{Binding SelectedInfo, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedSat, UpdateSourceTrigger=PropertyChanged}"
                   SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto"
@@ -51,7 +51,7 @@
 
                 <DataGridTextColumn Width="100"
                                     Binding="{Binding SatCatItem.NORAD_CAT_ID}"
-                                    Header="NORAD&#x0a;Catalog&#x0a;Number" />
+                                    Header="NORAD ID" />
 
                 <DataGridTextColumn Width="100"
                                     Binding="{Binding Latitude, StringFormat={}{0:F2}}"

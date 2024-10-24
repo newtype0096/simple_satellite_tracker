@@ -20,7 +20,7 @@ namespace CelesTrakLib
                 SQLiteConnection.CreateFile(databaseFileName);
             }
 
-            _connString = $"Data Source={databaseFileName};Version=3;Pooling=True;Journal Mode=WAL;Synchronous=Normal;";
+            _connString = $"Data Source={databaseFileName};";
         }
 
         public void Init()

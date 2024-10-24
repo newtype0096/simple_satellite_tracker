@@ -9,10 +9,5 @@
              mc:Ignorable="d">
     <Grid>
         <local:OrbitGridView />
-
-        <local:PositionDataView Margin="10,0,0,10"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Visibility="Collapsed" />
     </Grid>
 </UserControl>

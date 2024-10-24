@@ -69,14 +69,14 @@
 
             <DataGrid Grid.Row="1"
                       ColumnWidth="*"
-                      ItemsSource="{Binding FilteredSatelliteInfos}">
+                      ItemsSource="{Binding FilteredSatellites}">
                 <i:Interaction.Behaviors>
-                    <bh:DataGridSelectedItemsBehavior SelectedItems="{Binding TargetSatelliteInfos}" />
+                    <bh:DataGridSelectedItemsBehavior SelectedItems="{Binding TargetSatellites}" />
                 </i:Interaction.Behaviors>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding SatCatItem.OBJECT_ID}" Header="International&#x0a;Designator" />
-                    <DataGridTextColumn Binding="{Binding SatCatItem.NORAD_CAT_ID}" Header="NORAD&#x0a;Catalog&#x0a;Number" />
+                    <DataGridTextColumn Binding="{Binding SatCatItem.NORAD_CAT_ID}" Header="NORAD ID" />
                     <DataGridTextColumn Binding="{Binding SatCatItem.OBJECT_NAME}" Header="Name" />
                     <DataGridTextColumn Binding="{Binding SatCatItem.OWNER}" Header="Source" />
                     <DataGridTextColumn Binding="{Binding SatCatItem.LAUNCH_DATE}" Header="Launch&#x0a;Date" />
