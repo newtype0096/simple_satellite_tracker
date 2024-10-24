@@ -163,6 +163,14 @@ namespace CelesTrakLib
 
                             target.Value.Sgp4DataItem = SatFunctions.getSatPositionAtTime(target.Value.TleItem, epochTime, Sgp4.wgsConstant.WGS_84);
                             target.Value.CoordinateItem = SatFunctions.calcSatSubPoint(epochTime, target.Value.Sgp4DataItem, Sgp4.wgsConstant.WGS_84);
+
+                            target.Value.Latitude = target.Value.CoordinateItem.getLatitude();
+                            target.Value.Longitude = target.Value.CoordinateItem.getLongitude();
+                            target.Value.Altitude = target.Value.CoordinateItem.getHeight();
+                            target.Value.Speed = Utils.GetSpeed(target.Value.Sgp4DataItem.getVelocityData());
+                            target.Value.RightAscension = Utils.GetRightAscension(target.Value.Sgp4DataItem.getPositionData());
+                            target.Value.Declination = Utils.GetDeclination(target.Value.Sgp4DataItem.getPositionData());
+
                             target.Value.LastPositionUpdateTime = DateTime.Now;
 
                             UpdatePositionCallback?.Invoke(target.Key, target.Value);
@@ -207,7 +215,7 @@ namespace CelesTrakLib
             if (_sqliteHelper.SelectLastUpdate("satcat", out var lastUpdate) && lastUpdate != null)
             {
                 var timeSpan = DateTime.Now - lastUpdate.DATETIME;
-                if (timeSpan.TotalDays < 1)
+                if (timeSpan.TotalDays < 1 && DateTime.Now.Day == lastUpdate.DATETIME.Day)
                 {
                     needDownload = false;
                 }

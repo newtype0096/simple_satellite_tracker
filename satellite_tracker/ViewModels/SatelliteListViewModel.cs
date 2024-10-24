@@ -51,18 +51,6 @@ namespace satellite_tracker.ViewModels
                     var info = SatelliteInfos.FirstOrDefault(x => x.SatCatItem.NORAD_CAT_ID == norad_cat_id);
                     if (info != null)
                     {
-                        info.Mean_Motion_Dot = trackingInfo.TleItem.getFirstMeanMotion();
-                        info.Mean_Motion_Ddot = trackingInfo.TleItem.getSecondMeanMotion();
-                        info.BSTAR = trackingInfo.TleItem.getDrag();
-                        info.Ephemeris_Type = trackingInfo.TleItem.getEphemeris();
-                        info.Element_Set_No = trackingInfo.TleItem.getSetNumber();
-                        info.Inclination = trackingInfo.TleItem.getInclination();
-                        info.RAAN = trackingInfo.TleItem.getRightAscendingNode();
-                        info.Eccentricity = trackingInfo.TleItem.getEccentriciy();
-                        info.Arg_Of_Pericenter = trackingInfo.TleItem.getPerigee();
-                        info.Mean_Anomaly = trackingInfo.TleItem.getMeanAnomoly();
-                        info.Mean_Motion = trackingInfo.TleItem.getMeanMotion();
-
                         info.TrackingInfoItem = trackingInfo;
                     }
                 };
@@ -73,6 +61,13 @@ namespace satellite_tracker.ViewModels
                     var info = SatelliteInfos.FirstOrDefault(x => x.SatCatItem.NORAD_CAT_ID == norad_cat_id);
                     if (info != null)
                     {
+                        info.Latitude = trackingInfo.Latitude;
+                        info.Longitude = trackingInfo.Longitude;
+                        info.Altitude = trackingInfo.Altitude;
+                        info.Speed = trackingInfo.Speed;
+                        info.RightAscension = trackingInfo.RightAscension;
+                        info.Declination = trackingInfo.Declination;
+
                         info.TrackingInfoItem = trackingInfo;
 
                         if (OrbitViewModel.Default.SelectedInfo?.SatCatItem.NORAD_CAT_ID == norad_cat_id)

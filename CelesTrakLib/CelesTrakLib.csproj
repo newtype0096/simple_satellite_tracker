@@ -104,6 +104,7 @@
     <Compile Include="Responses\DownloadGpDatasResponse.cs" />
     <Compile Include="Responses\DownloadSatCatsResponse.cs" />
     <Compile Include="SQLiteHelper.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -18,6 +18,12 @@ namespace CelesTrakLib.Datas
         public DateTime LastPositionUpdateTime { get; set; }
         public Sgp4Data Sgp4DataItem { get; set; }
         public Coordinate CoordinateItem { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Altitude { get; set; }
+        public double Speed { get; set; }
+        public string RightAscension { get; set; }
+        public string Declination { get; set; }
 
         public DateTime LastCoordinatesUpdateTime { get; set; }
         public List<Coordinate> Coordinates { get; } = new List<Coordinate>();

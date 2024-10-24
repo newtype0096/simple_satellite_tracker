@@ -48,39 +48,40 @@
                 <DataGridTextColumn Width="Auto"
                                     Binding="{Binding SatCatItem.OBJECT_NAME}"
                                     Header="Name" />
+
                 <DataGridTextColumn Width="100"
                                     Binding="{Binding SatCatItem.NORAD_CAT_ID}"
                                     Header="NORAD&#x0a;Catalog&#x0a;Number" />
+
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Latitude, StringFormat={}{0:F2}}"
+                                    Header="Latitude" />
+
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Longitude, StringFormat={}{0:F2}}"
+                                    Header="Longitude" />
+
+                <DataGridTextColumn Width="150"
+                                    Binding="{Binding Altitude, StringFormat={}{0:F2}}"
+                                    Header="Altitude [km]" />
+
+                <DataGridTextColumn Width="150"
+                                    Binding="{Binding Speed, StringFormat={}{0:F2}}"
+                                    Header="Speed [km/s]" />
+
+                <DataGridTextColumn Width="100" Header="Azimuth" />
+
+                <DataGridTextColumn Width="100" Header="Elevation" />
+
                 <DataGridTextColumn Width="200"
-                                    Binding="{Binding Mean_Motion_Dot}"
-                                    Header="Mean Motion Dot" />
-                <DataGridTextColumn Width="200"
-                                    Binding="{Binding Mean_Motion_Ddot}"
-                                    Header="Mean Motion Ddot" />
+                                    Binding="{Binding RightAscension}"
+                                    Header="Right Ascension [UTC]" />
+
                 <DataGridTextColumn Width="150"
-                                    Binding="{Binding BSTAR}"
-                                    Header="BSTAR" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding Ephemeris_Type}"
-                                    Header="Ephemeris" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding Element_Set_No}"
-                                    Header="Element Set No" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding Inclination}"
-                                    Header="Inclination" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding RAAN}"
-                                    Header="RAAN" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding Eccentricity}"
-                                    Header="Eccentricity" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding Mean_Anomaly}"
-                                    Header="Mean Anomaly" />
-                <DataGridTextColumn Width="150"
-                                    Binding="{Binding Mean_Motion}"
-                                    Header="Mean Motion" />
+                                    Binding="{Binding Declination}"
+                                    Header="Declination" />
+
+                <DataGridTextColumn Width="200" Header="Local Sidereal Time" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

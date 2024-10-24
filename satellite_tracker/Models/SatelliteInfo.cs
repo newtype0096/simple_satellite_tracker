@@ -9,81 +9,53 @@ namespace satellite_tracker.Models
     {
         public bool IsTracking { get; set; }
 
-        private double _mean_motion_dot;
-        public double Mean_Motion_Dot
+        private double _latitude;
+        public double Latitude
         {
-            get => _mean_motion_dot;
-            set => SetProperty(ref _mean_motion_dot, value);
+            get => _latitude;
+            set => SetProperty(ref _latitude, value);
         }
 
-        private double _mean_motion_ddot;
-        public double Mean_Motion_Ddot
+        private double _longitude;
+        public double Longitude
         {
-            get => _mean_motion_ddot;
-            set => SetProperty(ref _mean_motion_ddot, value);
+            get => _longitude;
+            set => SetProperty(ref _longitude, value);
         }
 
-        private double _bstar;
-        public double BSTAR
+        private double _altitude;
+        public double Altitude
         {
-            get => _bstar;
-            set => SetProperty(ref _bstar, value);
+            get => _altitude;
+            set => SetProperty(ref _altitude, value);
         }
 
-        private double _ephemeris_type;
-        public double Ephemeris_Type
+        private double _speed;
+        public double Speed
         {
-            get => _ephemeris_type;
-            set => SetProperty(ref _ephemeris_type, value);
+            get => _speed;
+            set => SetProperty(ref _speed, value);
         }
 
-        private double _element_set_no;
-        public double Element_Set_No
+        private string _rightAscension;
+        public string RightAscension
         {
-            get => _element_set_no;
-            set => SetProperty(ref _element_set_no, value);
+            get => _rightAscension;
+            set => SetProperty(ref _rightAscension, value);
         }
 
-        private double _inclination;
-        public double Inclination
+        private string _declination;
+        public string Declination
         {
-            get => _inclination;
-            set => SetProperty(ref _inclination, value);
+            get => _declination;
+            set => SetProperty(ref _declination, value);
         }
 
-        private double _raan;
-        public double RAAN
+        private string _localSiderealTime;
+        public string LocalSiderealTime
         {
-            get => _raan;
-            set => SetProperty(ref _raan, value);
-        }
-
-        private double _eccentricity;
-        public double Eccentricity
-        {
-            get => _eccentricity;
-            set => SetProperty(ref _eccentricity, value);
-        }
-
-        private double _arg_of_pericenter;
-        public double Arg_Of_Pericenter
-        {
-            get => _arg_of_pericenter;
-            set => SetProperty(ref _arg_of_pericenter, value);
-        }
-
-        private double _mean_anomaly;
-        public double Mean_Anomaly
-        {
-            get => _mean_anomaly;
-            set => SetProperty(ref _mean_anomaly, value);
-        }
-
-        private double _mean_motion;
-        public double Mean_Motion
-        {
-            get => _mean_motion;
-            set => SetProperty(ref _mean_motion, value);
+            get => _localSiderealTime;
+            set => SetProperty(ref _localSiderealTime, value);
         }
 
         private SatCat _satCatItem;
