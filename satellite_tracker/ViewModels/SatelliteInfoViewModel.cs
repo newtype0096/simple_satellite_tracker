@@ -60,8 +60,8 @@ namespace satellite_tracker.ViewModels
             FindInfo("Inclination").Data = $"{SelectedSat.SatCatItem.INCLINATION} °";
             FindInfo("Period").Data = $"{SelectedSat.SatCatItem.PERIOD} minutes";
             FindInfo("Launch date").Data = SelectedSat.SatCatItem.LAUNCH_DATE;
-            FindInfo("Source").Data = SelectedSat.SatCatItem.OWNER;
-            FindInfo("Launch site").Data = SelectedSat.SatCatItem.LAUNCH_SITE;
+            FindInfo("Source").Data = CelesTrakLib.Dictionaries.Sources.GetSourceFull(SelectedSat.SatCatItem.OWNER);
+            FindInfo("Launch site").Data = CelesTrakLib.Dictionaries.LaunchSites.GetLaunchSiteFull(SelectedSat.SatCatItem.LAUNCH_SITE);
         }
 
         private SatelliteInfo FindInfo(string name)

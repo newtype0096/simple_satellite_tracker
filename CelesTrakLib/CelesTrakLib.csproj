@@ -99,6 +99,8 @@
     <Compile Include="Datas\LastUpdate.cs" />
     <Compile Include="Datas\SatCat.cs" />
     <Compile Include="Datas\TrackingInfo.cs" />
+    <Compile Include="Dictionaries\LaunchSites.cs" />
+    <Compile Include="Dictionaries\Sources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\CelesTrackResponse.cs" />
     <Compile Include="Responses\DownloadGpDatasResponse.cs" />
