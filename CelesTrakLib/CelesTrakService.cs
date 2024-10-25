@@ -179,25 +179,7 @@ namespace CelesTrakLib
                         var coordinatesTimeSpan = DateTime.Now - target.Value.LastCoordinatesUpdateTime;
                         if (coordinatesTimeSpan.TotalMinutes >= 60 && target.Value.TleItem != null)
                         {
-                            EpochTime startTime = new EpochTime(DateTime.UtcNow.AddHours(-1.5));
-                            EpochTime stopTime = new EpochTime(DateTime.UtcNow.AddHours(1.5));
-                            EpochTime calcTime = new EpochTime(startTime);
-
-                            var sgp4Propagator = new Sgp4(target.Value.TleItem, Sgp4.wgsConstant.WGS_84);
-                            sgp4Propagator.runSgp4Cal(startTime, stopTime, 1 / 30.0);
-
-                            target.Value.Coordinates.Clear();
-
-                            var results = sgp4Propagator.getResults();
-                            foreach (var result in results)
-                            {
-                                var coordinate = SatFunctions.calcSatSubPoint(calcTime, result, Sgp4.wgsConstant.WGS_84);
-                                target.Value.Coordinates.Add(coordinate);
-
-                                calcTime.addTick(2);
-                            }
-
-                            target.Value.LastCoordinatesUpdateTime = DateTime.Now;
+                            UpdateCoordinates(target.Value);
 
                             UpdateCoordinatesCallback?.Invoke(target.Key, target.Value);
                         }
@@ -206,6 +188,51 @@ namespace CelesTrakLib
 
                 Thread.Sleep(100);
             }
+        }
+
+        private void UpdateCoordinates(TrackingInfo trackingInfo)
+        {
+            double period = double.Parse(trackingInfo.SatCatItem.PERIOD);
+
+            var step = 1 / 30.0;
+            var tick = 2;
+
+            var div = period / 60.0;
+            if (div > 18)
+            {
+                step = 10;
+                tick = 10 * 60;
+            }
+            else if (div > 12)
+            {
+                step = 5;
+                tick = 5 * 60;
+            }
+            else if (div > 6)
+            {
+                step = 1;
+                tick = 1 * 60;
+            }
+
+            EpochTime startTime = new EpochTime(DateTime.UtcNow.AddHours(-div));
+            EpochTime stopTime = new EpochTime(DateTime.UtcNow.AddHours(div));
+            EpochTime calcTime = new EpochTime(startTime);
+
+            var sgp4Propagator = new Sgp4(trackingInfo.TleItem, Sgp4.wgsConstant.WGS_84);
+            sgp4Propagator.runSgp4Cal(startTime, stopTime, step);
+
+            trackingInfo.Coordinates.Clear();
+
+            var results = sgp4Propagator.getResults();
+            foreach (var result in results)
+            {
+                var coordinate = SatFunctions.calcSatSubPoint(calcTime, result, Sgp4.wgsConstant.WGS_84);
+                trackingInfo.Coordinates.Add(coordinate);
+
+                calcTime.addTick(tick);
+            }
+
+            trackingInfo.LastCoordinatesUpdateTime = DateTime.Now;
         }
 
         public bool GetSatCats(out List<SatCat> satCats)

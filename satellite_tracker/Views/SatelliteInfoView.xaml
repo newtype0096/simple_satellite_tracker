@@ -9,8 +9,8 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <DataGrid ColumnHeaderHeight="0"
-              ColumnWidth="*"
+    <DataGrid ColumnWidth="*"
+              HeadersVisibility="None"
               ItemsSource="{Binding SatelliteInfos}">
         <DataGrid.Resources>
             <Style TargetType="{x:Type DataGridRow}">
