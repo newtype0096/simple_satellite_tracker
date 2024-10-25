@@ -139,10 +139,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="GlobalData.cs" />
+    <Compile Include="LayoutInitializer.cs" />
     <Compile Include="Models\Satellite.cs" />
     <Compile Include="Models\SatelliteInfo.cs" />
+    <Compile Include="PanesStyleSelector.cs" />
+    <Compile Include="PanesTemplateSelector.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\OrbitViewModel.cs" />
+    <Compile Include="ViewModels\PaneViewModel.cs" />
     <Compile Include="ViewModels\SatelliteInfoViewModel.cs" />
     <Compile Include="ViewModels\SatelliteSearchWindowViewModel.cs" />
     <Compile Include="Views\Behaviros\DataGridSelectedItemsBehavior.cs" />

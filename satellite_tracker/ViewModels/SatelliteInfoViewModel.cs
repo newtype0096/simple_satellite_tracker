@@ -1,10 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using satellite_tracker.Models;
+﻿using satellite_tracker.Models;
 using System.Collections.Generic;
 
 namespace satellite_tracker.ViewModels
 {
-    public class SatelliteInfoViewModel : ObservableObject
+    public class SatelliteInfoViewModel : PaneViewModel
     {
         public static SatelliteInfoViewModel Default { get; } = new SatelliteInfoViewModel();
 
@@ -28,6 +27,7 @@ namespace satellite_tracker.ViewModels
         }
 
         public SatelliteInfoViewModel()
+            : base("Satellite Info")
         {
             SatelliteInfos.Add(new SatelliteInfo() { Name = "Name" });
             SatelliteInfos.Add(new SatelliteInfo() { Name = "NORAD ID" });

@@ -27,6 +27,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <cv:SizeChangedEventArgConverter x:Key="SizeChangedEventArgConverter" />
 
             <local:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />

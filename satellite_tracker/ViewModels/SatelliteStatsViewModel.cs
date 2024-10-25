@@ -1,5 +1,4 @@
 ﻿using CelesTrakLib.Datas;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using satellite_tracker.Models;
@@ -9,7 +8,7 @@ using System.Linq;
 
 namespace satellite_tracker.ViewModels
 {
-    public class SatelliteStatsViewModel : ObservableObject
+    public class SatelliteStatsViewModel : PaneViewModel
     {
         public static SatelliteStatsViewModel Default { get; } = new SatelliteStatsViewModel();
 
@@ -39,6 +38,7 @@ namespace satellite_tracker.ViewModels
         public RelayCommand<Satellite> RemoveTrackingTargetCommand { get; }
 
         public SatelliteStatsViewModel()
+            : base("Satellite Stats")
         {
             _trackingTargetListFileName = Path.Combine(GlobalData.Default.DataDirectory, "tracking_targets.txt");
 

@@ -4,10 +4,11 @@
                  xmlns:ad="https://github.com/Dirkster99/AvalonDock"
                  xmlns:controls="clr-namespace:satellite_tracker.Views.Controls"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:local="clr-namespace:satellite_tracker.Views"
+                 xmlns:local="clr-namespace:satellite_tracker"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+                 xmlns:views="clr-namespace:satellite_tracker.Views"
                  xmlns:vm="clr-namespace:satellite_tracker.ViewModels"
                  Title="Satellite Tracker"
                  Width="1680"
@@ -23,8 +24,13 @@
         <mah:WindowCommands>
             <Menu VerticalAlignment="Center">
                 <MenuItem Header="View">
-                    <MenuItem Header="Satellite Info" IsCheckable="True" />
-                    <MenuItem Header="Satellite Stats" IsCheckable="True" />
+                    <MenuItem Header="Satellite Info"
+                              IsCheckable="True"
+                              IsChecked="{Binding SatelliteInfo.IsVisible, Mode=TwoWay}" />
+
+                    <MenuItem Header="Satellite Stats"
+                              IsCheckable="True"
+                              IsChecked="{Binding SatelliteStats.IsVisible, Mode=TwoWay}" />
                 </MenuItem>
             </Menu>
         </mah:WindowCommands>
@@ -45,10 +51,41 @@
             <controls:ClockControl Grid.Column="1" HorizontalAlignment="Right" />
         </Grid>
 
-        <ad:DockingManager Grid.Row="1">
+        <ad:DockingManager Grid.Row="1" AnchorablesSource="{Binding Panes}">
             <ad:DockingManager.Theme>
                 <ad:Vs2013DarkTheme />
             </ad:DockingManager.Theme>
+
+            <ad:DockingManager.LayoutItemTemplateSelector>
+                <local:PanesTemplateSelector>
+                    <local:PanesTemplateSelector.SatelliteInfoViewTemplate>
+                        <DataTemplate>
+                            <views:SatelliteInfoView />
+                        </DataTemplate>
+                    </local:PanesTemplateSelector.SatelliteInfoViewTemplate>
+
+                    <local:PanesTemplateSelector.SatelliteStatsViewTemplate>
+                        <DataTemplate>
+                            <views:SatelliteStatsView />
+                        </DataTemplate>
+                    </local:PanesTemplateSelector.SatelliteStatsViewTemplate>
+                </local:PanesTemplateSelector>
+            </ad:DockingManager.LayoutItemTemplateSelector>
+
+            <ad:DockingManager.LayoutItemContainerStyleSelector>
+                <local:PanesStyleSelector>
+                    <local:PanesStyleSelector.CommonStyle>
+                        <Style TargetType="{x:Type ad:LayoutAnchorableItem}">
+                            <Setter Property="Title" Value="{Binding Model.Title}" />
+                            <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}" />
+                        </Style>
+                    </local:PanesStyleSelector.CommonStyle>
+                </local:PanesStyleSelector>
+            </ad:DockingManager.LayoutItemContainerStyleSelector>
+
+            <ad:DockingManager.LayoutUpdateStrategy>
+                <local:LayoutInitializer />
+            </ad:DockingManager.LayoutUpdateStrategy>
 
             <ad:LayoutRoot>
                 <ad:LayoutPanel DockHeight="*"
@@ -59,28 +96,14 @@
                                     Orientation="Horizontal">
                         <ad:LayoutDocumentPane ShowHeader="False">
                             <ad:LayoutDocument>
-                                <local:MainView />
+                                <views:MainView />
                             </ad:LayoutDocument>
                         </ad:LayoutDocumentPane>
 
-                        <ad:LayoutAnchorablePane DockWidth="300">
-                            <ad:LayoutAnchorable Title="Satellite Info"
-                                                 CanClose="False"
-                                                 CanDockAsTabbedDocument="False"
-                                                 CanHide="False">
-                                <local:SatelliteInfoView />
-                            </ad:LayoutAnchorable>
-                        </ad:LayoutAnchorablePane>
+                        <ad:LayoutAnchorablePane Name="SatelliteInfoPane" DockWidth="300" />
                     </ad:LayoutPanel>
 
-                    <ad:LayoutAnchorablePane DockHeight="300">
-                        <ad:LayoutAnchorable Title="Satellite Stats"
-                                             CanClose="False"
-                                             CanDockAsTabbedDocument="False"
-                                             CanHide="False">
-                            <local:SatelliteStatsView />
-                        </ad:LayoutAnchorable>
-                    </ad:LayoutAnchorablePane>
+                    <ad:LayoutAnchorablePane Name="SatelliteStatsPane" DockHeight="300" />
                 </ad:LayoutPanel>
             </ad:LayoutRoot>
         </ad:DockingManager>
