@@ -7,13 +7,13 @@ namespace satellite_tracker.Views
     /// <summary>
     /// SatelliteListView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class SatelliteListView : UserControl
+    public partial class SatelliteStatsView : UserControl
     {
-        public SatelliteListView()
+        public SatelliteStatsView()
         {
             InitializeComponent();
 
-            DataContext = SatelliteListViewModel.Default;
+            DataContext = SatelliteStatsViewModel.Default;
         }
 
         private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -21,7 +21,7 @@ namespace satellite_tracker.Views
             if (e.Key == Key.Delete)
             {
                 var dataGrid = (DataGrid)sender;
-                SatelliteListViewModel.Default.RemoveTrackingTargetCommand.Execute(dataGrid.SelectedItem);
+                SatelliteStatsViewModel.Default.RemoveTrackingTargetCommand.Execute(dataGrid.SelectedItem);
             }
         }
     }

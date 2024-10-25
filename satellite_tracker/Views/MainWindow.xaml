@@ -14,10 +14,22 @@
                  Height="1050"
                  md:DialogServiceViews.IsRegistered="True"
                  DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowVM}"
-                 NonActiveWindowTitleBrush="Transparent"
+                 NonActiveWindowTitleBrush="{StaticResource Sub_Background}"
                  ResizeMode="CanResizeWithGrip"
-                 WindowTitleBrush="Transparent"
+                 TitleAlignment="Center"
+                 WindowTitleBrush="{StaticResource Sub_Background}"
                  mc:Ignorable="d">
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Menu VerticalAlignment="Center">
+                <MenuItem Header="View">
+                    <MenuItem Header="Satellite Info" IsCheckable="True" />
+                    <MenuItem Header="Satellite Stats" IsCheckable="True" />
+                </MenuItem>
+            </Menu>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -59,21 +71,6 @@
                                 <local:SatelliteInfoView />
                             </ad:LayoutAnchorable>
                         </ad:LayoutAnchorablePane>
-                        <!--<ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
-                            <ad:LayoutAnchorablePane>
-                                <ad:LayoutAnchorable Title="Orbit"
-                                                     CanClose="False"
-                                                     CanDockAsTabbedDocument="False"
-                                                     CanHide="False" />
-                            </ad:LayoutAnchorablePane>
-
-                            <ad:LayoutAnchorablePane>
-                                <ad:LayoutAnchorable Title="3D"
-                                                     CanClose="False"
-                                                     CanDockAsTabbedDocument="False"
-                                                     CanHide="False" />
-                            </ad:LayoutAnchorablePane>
-                        </ad:LayoutAnchorablePaneGroup>-->
                     </ad:LayoutPanel>
 
                     <ad:LayoutAnchorablePane DockHeight="300">
@@ -81,7 +78,7 @@
                                              CanClose="False"
                                              CanDockAsTabbedDocument="False"
                                              CanHide="False">
-                            <local:SatelliteListView />
+                            <local:SatelliteStatsView />
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>
                 </ad:LayoutPanel>

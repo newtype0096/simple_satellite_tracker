@@ -231,7 +231,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SatelliteListView.xaml">
+    <Page Include="Views\SatelliteStatsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,9 +243,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\SatelliteListViewModel.cs" />
-    <Compile Include="Views\SatelliteListView.xaml.cs">
-      <DependentUpon>SatelliteListView.xaml</DependentUpon>
+    <Compile Include="ViewModels\SatelliteStatsViewModel.cs" />
+    <Compile Include="Views\SatelliteStatsView.xaml.cs">
+      <DependentUpon>SatelliteStatsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace satellite_tracker.ViewModels
 {
-    public class SatelliteListViewModel : ObservableObject
+    public class SatelliteStatsViewModel : ObservableObject
     {
-        public static SatelliteListViewModel Default { get; } = new SatelliteListViewModel();
+        public static SatelliteStatsViewModel Default { get; } = new SatelliteStatsViewModel();
 
         private string _trackingTargetListFileName;
 
@@ -38,7 +38,7 @@ namespace satellite_tracker.ViewModels
         public RelayCommand SettingsCommand { get; }
         public RelayCommand<Satellite> RemoveTrackingTargetCommand { get; }
 
-        public SatelliteListViewModel()
+        public SatelliteStatsViewModel()
         {
             _trackingTargetListFileName = Path.Combine(GlobalData.Default.DataDirectory, "tracking_targets.txt");
 
