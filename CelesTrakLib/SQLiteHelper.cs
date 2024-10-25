@@ -12,6 +12,7 @@ namespace CelesTrakLib
     public class SQLiteHelper
     {
         private string _connString;
+        private string _connString_ReadOnly;
 
         public SQLiteHelper(string databaseFileName)
         {
@@ -20,7 +21,8 @@ namespace CelesTrakLib
                 SQLiteConnection.CreateFile(databaseFileName);
             }
 
-            _connString = $"Data Source={databaseFileName};";
+            _connString = $"Data Source={databaseFileName};Version=3;Journal Mode=WAL;";
+            _connString_ReadOnly = _connString + "Read Only=True;";
         }
 
         public void Init()
@@ -60,7 +62,7 @@ namespace CelesTrakLib
 
             try
             {
-                using (var conn = new SQLiteConnection(_connString))
+                using (var conn = new SQLiteConnection(_connString_ReadOnly))
                 {
                     conn.Open();
                     string sql = $"SELECT category, datetime FROM last_update WHERE category = '{category}'";
@@ -122,7 +124,7 @@ namespace CelesTrakLib
 
             try
             {
-                using (var conn = new SQLiteConnection(_connString))
+                using (var conn = new SQLiteConnection(_connString_ReadOnly))
                 {
                     conn.Open();
                     string sql = "SELECT object_name, object_id, norad_cat_id, object_type, ops_status_code, owner, " +
@@ -284,7 +286,7 @@ namespace CelesTrakLib
 
             try
             {
-                using (var conn = new SQLiteConnection(_connString))
+                using (var conn = new SQLiteConnection(_connString_ReadOnly))
                 {
                     conn.Open();
                     string sql = "SELECT object_name, norad_cat_id, line1, line2 FROM gp_data " +
