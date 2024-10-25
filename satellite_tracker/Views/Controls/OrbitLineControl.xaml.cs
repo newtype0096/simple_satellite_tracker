@@ -36,15 +36,19 @@ namespace satellite_tracker.Views.Controls
 
         public OrbitLineVisualHost()
         {
+            VisualBitmapScalingMode = BitmapScalingMode.NearestNeighbor;
+            VisualEdgeMode = EdgeMode.Aliased;
+
             _visuals = new VisualCollection(this);
         }
 
         public void AddOrbitLine(Point start, Point end)
         {
             var visual = new DrawingVisual();
+
             using (DrawingContext dc = visual.RenderOpen())
             {
-                var pen = new Pen(Brushes.Gray, 1);
+                var pen = new Pen(Brushes.Gold, 3);
                 dc.DrawLine(pen, start, end);
             }
             _visuals.Add(visual);

@@ -23,6 +23,7 @@
                 <ResourceDictionary Source="Styles/DataGridStyle.xaml" />
                 <ResourceDictionary Source="Styles/Icons.xaml" />
                 <ResourceDictionary Source="Styles/LabelStyle.xaml" />
+                <ResourceDictionary Source="Styles/MenuStyle.xaml" />
                 <ResourceDictionary Source="Styles/TextBoxStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
