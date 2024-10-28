@@ -1,4 +1,5 @@
 ﻿using satellite_tracker.Models;
+using System;
 using System.Collections.Generic;
 using System.Device.Location;
 
@@ -23,6 +24,7 @@ namespace satellite_tracker.ViewModels
         {
             ObserverInfos.Add(new PropertyItem() { Name = "Latitude" });
             ObserverInfos.Add(new PropertyItem() { Name = "Longitude" });
+            ObserverInfos.Add(new PropertyItem() { Name = "Local Time zone" });
 
             GeoCoordinateWatcher watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.Default);
             watcher.StatusChanged += (s, e) =>
@@ -34,6 +36,7 @@ namespace satellite_tracker.ViewModels
                     {
                         FindInfo("Latitude").Data = Latitude = coord.Latitude;
                         FindInfo("Longitude").Data = Longitude = coord.Longitude;
+                        FindInfo("Local Time zone").Data = TimeZoneInfo.Local.DisplayName;
                     }
                 }
             };

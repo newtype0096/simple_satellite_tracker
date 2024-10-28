@@ -20,6 +20,36 @@
     </i:Interaction.Triggers>
 
     <Grid>
+        <Canvas Visibility="{Binding Observer.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Ellipse Width="{Binding Observer.MarkerWidth}" Height="{Binding Observer.MarkerHeight}">
+                <Ellipse.RenderTransform>
+                    <TranslateTransform X="{Binding Observer.MarkerLeft}" Y="{Binding Observer.MarkerTop}" />
+                </Ellipse.RenderTransform>
+
+                <Ellipse.Style>
+                    <Style TargetType="{x:Type Ellipse}">
+                        <Setter Property="Fill" Value="Cyan" />
+                    </Style>
+                </Ellipse.Style>
+            </Ellipse>
+
+            <TextBlock local:SizeObserver.Observe="True"
+                       local:SizeObserver.ObservedWidth="{Binding Observer.LabelWidth, Mode=OneWayToSource}"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Text="{Binding Observer.LabelText}">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="{Binding Observer.LabelLeft}" Y="{Binding Observer.LabelTop}" />
+                </TextBlock.RenderTransform>
+
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="Cyan" />
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Canvas>
+
         <controls:OrbitLineControl x:Name="OrbitLineControl" />
 
         <ItemsControl ItemsSource="{Binding Indicators}">

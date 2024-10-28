@@ -141,6 +141,8 @@
     </ApplicationDefinition>
     <Compile Include="GlobalData.cs" />
     <Compile Include="LayoutInitializer.cs" />
+    <Compile Include="Models\Indicator.cs" />
+    <Compile Include="Models\ObserverIndicator.cs" />
     <Compile Include="Models\Satellite.cs" />
     <Compile Include="Models\SatelliteIndicator.cs" />
     <Compile Include="Models\PropertyItem.cs" />

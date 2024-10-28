@@ -37,6 +37,13 @@ namespace satellite_tracker.ViewModels
             set => SetProperty(ref _indicators, value);
         }
 
+        private ObserverIndicator _observer = new ObserverIndicator();
+        public ObserverIndicator Observer
+        {
+            get => _observer;
+            set => SetProperty(ref _observer, value);
+        }
+
         public RelayCommand<(double, double)?> SizeCommand { get; }
 
         public OrbitViewModel()
@@ -91,6 +98,8 @@ namespace satellite_tracker.ViewModels
             {
                 indicator.UpdateIndicator(SelectedSat, WindowWidth, WindowHeight);
             }
+
+            Observer.UpdateIndicator(ObserverInfoViewModel.Default.Latitude, ObserverInfoViewModel.Default.Longitude, WindowWidth, WindowHeight);
         }
 
         public void AddDisplayTarget(Satellite sat)
