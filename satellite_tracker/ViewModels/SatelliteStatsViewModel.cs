@@ -72,7 +72,7 @@ namespace satellite_tracker.ViewModels
 
                         if (OrbitViewModel.Default.SelectedSat?.SatCatItem.NORAD_CAT_ID == norad_cat_id)
                         {
-                            OrbitViewModel.Default.UpdateGp();
+                            OrbitViewModel.Default.UpdateIndicator();
                         }
                     }
                 };
@@ -107,6 +107,7 @@ namespace satellite_tracker.ViewModels
                     {
                         Satellites.Add(sat);
                         GlobalData.Default.CelesTrak.AddTrackingTarget(sat.SatCatItem.NORAD_CAT_ID, sat.SatCatItem);
+                        OrbitViewModel.Default.AddDisplayTarget(sat);
                     }
                 }
 
@@ -123,6 +124,7 @@ namespace satellite_tracker.ViewModels
 
             if (Satellites.Remove(selectedSat))
             {
+                OrbitViewModel.Default.RemoveDisplayTarget(selectedSat);
                 GlobalData.Default.CelesTrak.RemoveTrackingTarget(selectedSat.SatCatItem.NORAD_CAT_ID);
 
                 WriteTrackingTargetList();
@@ -147,9 +149,11 @@ namespace satellite_tracker.ViewModels
                 {
                     foreach (var satCat in satCats)
                     {
-                        GlobalData.Default.CelesTrak.AddTrackingTarget(satCat.NORAD_CAT_ID, satCat);
+                        var sat = new Satellite() { SatCatItem = satCat };
+                        Satellites.Add(sat);
 
-                        Satellites.Add(new Satellite() { SatCatItem = satCat });
+                        OrbitViewModel.Default.AddDisplayTarget(sat);
+                        GlobalData.Default.CelesTrak.AddTrackingTarget(satCat.NORAD_CAT_ID, satCat);
                     }
                 }
             }

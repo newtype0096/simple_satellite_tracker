@@ -141,6 +141,7 @@
     <Compile Include="GlobalData.cs" />
     <Compile Include="LayoutInitializer.cs" />
     <Compile Include="Models\Satellite.cs" />
+    <Compile Include="Models\SatelliteIndicator.cs" />
     <Compile Include="Models\SatelliteInfo.cs" />
     <Compile Include="PanesStyleSelector.cs" />
     <Compile Include="PanesTemplateSelector.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Views\SatelliteSearchWindow.xaml.cs">
       <DependentUpon>SatelliteSearchWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SizeObserver.cs" />
     <Page Include="Styles\BusyMaskStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

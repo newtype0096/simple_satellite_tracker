@@ -673,7 +673,5 @@
                     BorderThickness="0,1,1,1" />
             <!--#endregion-->
         </Grid>
-
-        <local:OrbitView />
     </Grid>
 </UserControl>

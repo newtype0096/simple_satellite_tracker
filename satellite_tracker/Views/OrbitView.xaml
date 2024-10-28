@@ -22,13 +22,69 @@
     <Grid>
         <controls:OrbitLineControl x:Name="OrbitLineControl" />
 
-        <Canvas Visibility="{Binding IsGpMarkerVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Ellipse Canvas.Left="{Binding GpMarkerLeft}"
-                     Canvas.Top="{Binding GpMarkerTop}"
-                     Width="{Binding GpMarkerWidth}"
-                     Height="{Binding GpMarkerHeight}"
-                     Fill="DeepPink"
-                     Stroke="DeepPink" />
-        </Canvas>
+        <ItemsControl ItemsSource="{Binding Indicators}">
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    <Setter Property="Panel.ZIndex" Value="0" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="Panel.ZIndex" Value="99" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Canvas Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Ellipse Width="{Binding MarkerWidth}" Height="{Binding MarkerHeight}">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform X="{Binding MarkerLeft}" Y="{Binding MarkerTop}" />
+                            </Ellipse.RenderTransform>
+
+                            <Ellipse.Style>
+                                <Style TargetType="{x:Type Ellipse}">
+                                    <Setter Property="Fill" Value="White" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Fill" Value="Red" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+
+                        <TextBlock local:SizeObserver.Observe="True"
+                                   local:SizeObserver.ObservedWidth="{Binding LabelWidth, Mode=OneWayToSource}"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Text="{Binding LabelText}">
+                            <TextBlock.RenderTransform>
+                                <TranslateTransform X="{Binding LabelLeft}" Y="{Binding LabelTop}" />
+                            </TextBlock.RenderTransform>
+
+                            <TextBlock.Style>
+                                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Foreground" Value="White" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Foreground" Value="Red" />
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Opacity="0.5" Color="Black" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Canvas>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using satellite_tracker.Models;
 using satellite_tracker.Views.Controls;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace satellite_tracker.ViewModels
 {
@@ -15,30 +17,6 @@ namespace satellite_tracker.ViewModels
         public double WindowWidth { get; set; } = 0;
         public double WindowHeight { get; set; } = 0;
 
-        private bool _isGpMarkerVisible = false;
-        public bool IsGpMarkerVisible
-        {
-            get => _isGpMarkerVisible;
-            set => SetProperty(ref _isGpMarkerVisible, value);
-        }
-
-        private int _gpMarkerLeft;
-        public int GpMarkerLeft
-        {
-            get => _gpMarkerLeft;
-            set => SetProperty(ref _gpMarkerLeft, value);
-        }
-
-        private int _gpMarkerTop;
-        public int GpMarkerTop
-        {
-            get => _gpMarkerTop;
-            set => SetProperty(ref _gpMarkerTop, value);
-        }
-
-        public int GpMarkerWidth { get; } = 10;
-        public int GpMarkerHeight { get; } = 10;
-
         private Satellite _selectedSat;
         public Satellite SelectedSat
         {
@@ -48,8 +26,15 @@ namespace satellite_tracker.ViewModels
                 SetProperty(ref _selectedSat, value);
 
                 UpdateOrbit();
-                UpdateGp();
+                UpdateIndicator();
             }
+        }
+
+        private ObservableCollection<SatelliteIndicator> _indicators = new ObservableCollection<SatelliteIndicator>();
+        public ObservableCollection<SatelliteIndicator> Indicators
+        {
+            get => _indicators;
+            set => SetProperty(ref _indicators, value);
         }
 
         public RelayCommand<(double, double)?> SizeCommand { get; }
@@ -67,7 +52,7 @@ namespace satellite_tracker.ViewModels
                 WindowHeight = size.Value.Item2;
 
                 UpdateOrbit();
-                UpdateGp();
+                UpdateIndicator();
             }
         }
 
@@ -100,22 +85,31 @@ namespace satellite_tracker.ViewModels
             }
         }
 
-        public void UpdateGp()
+        public void UpdateIndicator()
         {
-            if (SelectedSat == null || SelectedSat.TrackingInfoItem == null || SelectedSat.TrackingInfoItem.CoordinateItem == null)
+            foreach (var indicator in Indicators)
             {
-                IsGpMarkerVisible = false;
+                indicator.UpdateIndicator(SelectedSat, WindowWidth, WindowHeight);
+            }
+        }
+
+        public void AddDisplayTarget(Satellite sat)
+        {
+            if (Indicators.Any(x => x.Sat.SatCatItem.NORAD_CAT_ID == sat.SatCatItem.NORAD_CAT_ID))
+            {
                 return;
             }
 
-            var coordinate = SelectedSat.TrackingInfoItem.CoordinateItem;
-            int x = (int)((coordinate.getLongitude() + 180.0) * (WindowWidth / 360.0));
-            int y = (int)((90.0 - coordinate.getLatitude()) * (WindowHeight / 180.0));
+            Indicators.Add(new SatelliteIndicator() { Sat = sat });
+        }
 
-            GpMarkerLeft = x - (GpMarkerWidth / 2);
-            GpMarkerTop = y - (GpMarkerHeight / 2);
-
-            IsGpMarkerVisible = true;
+        public void RemoveDisplayTarget(Satellite sat)
+        {
+            var indicator = Indicators.Where(x => x.Sat.SatCatItem.NORAD_CAT_ID == sat.SatCatItem.NORAD_CAT_ID).FirstOrDefault();
+            if (indicator != null)
+            {
+                Indicators.Remove(indicator);
+            }
         }
     }
 }
