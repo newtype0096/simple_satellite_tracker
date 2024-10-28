@@ -19,7 +19,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="KST" />
+            <Label x:Name="LocalTimeZone" Grid.Row="0" />
             <Label x:Name="KstTime"
                    Grid.Row="1"
                    Margin="0,-15,0,0"

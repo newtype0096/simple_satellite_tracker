@@ -7,8 +7,8 @@ namespace satellite_tracker.ViewModels
     {
         public static SatelliteInfoViewModel Default { get; } = new SatelliteInfoViewModel();
 
-        private List<SatelliteInfo> _satelliteInfos = new List<SatelliteInfo>();
-        public List<SatelliteInfo> SatelliteInfos
+        private List<PropertyItem> _satelliteInfos = new List<PropertyItem>();
+        public List<PropertyItem> SatelliteInfos
         {
             get => _satelliteInfos;
             set => SetProperty(ref _satelliteInfos, value);
@@ -29,16 +29,16 @@ namespace satellite_tracker.ViewModels
         public SatelliteInfoViewModel()
             : base("Satellite Info")
         {
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Name" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "NORAD ID" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "International Designator" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Perigee" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Apogee" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Inclination" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Period" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Launch date" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Source" });
-            SatelliteInfos.Add(new SatelliteInfo() { Name = "Launch site" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Name" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "NORAD ID" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "International Designator" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Perigee" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Apogee" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Inclination" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Period" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Launch date" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Source" });
+            SatelliteInfos.Add(new PropertyItem() { Name = "Launch site" });
         }
 
         private void UpdateInfo()
@@ -64,7 +64,7 @@ namespace satellite_tracker.ViewModels
             FindInfo("Launch site").Data = CelesTrakLib.Dictionaries.LaunchSites.GetLaunchSiteFull(SelectedSat.SatCatItem.LAUNCH_SITE);
         }
 
-        private SatelliteInfo FindInfo(string name)
+        private PropertyItem FindInfo(string name)
         {
             return SatelliteInfos.Find(x => x.Name == name);
         }

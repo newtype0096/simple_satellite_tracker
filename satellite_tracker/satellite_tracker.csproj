@@ -105,6 +105,7 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.119.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Device" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -142,10 +143,11 @@
     <Compile Include="LayoutInitializer.cs" />
     <Compile Include="Models\Satellite.cs" />
     <Compile Include="Models\SatelliteIndicator.cs" />
-    <Compile Include="Models\SatelliteInfo.cs" />
+    <Compile Include="Models\PropertyItem.cs" />
     <Compile Include="PanesStyleSelector.cs" />
     <Compile Include="PanesTemplateSelector.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModels\ObserverInfoViewModel.cs" />
     <Compile Include="ViewModels\OrbitViewModel.cs" />
     <Compile Include="ViewModels\PaneViewModel.cs" />
     <Compile Include="ViewModels\SatelliteInfoViewModel.cs" />
@@ -163,6 +165,9 @@
     <Compile Include="Views\Converters\SizeChangedEventArgConverter.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ObserverInfoView.xaml.cs">
+      <DependentUpon>ObserverInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OrbitGridView.xaml.cs">
       <DependentUpon>OrbitGridView.xaml</DependentUpon>
@@ -226,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ObserverInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

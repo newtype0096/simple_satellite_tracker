@@ -31,6 +31,10 @@
                     <MenuItem Header="Satellite Stats"
                               IsCheckable="True"
                               IsChecked="{Binding SatelliteStats.IsVisible, Mode=TwoWay}" />
+
+                    <MenuItem Header="Observer Info"
+                              IsCheckable="True"
+                              IsChecked="{Binding ObserverInfo.IsVisible, Mode=TwoWay}" />
                 </MenuItem>
             </Menu>
         </mah:WindowCommands>
@@ -43,11 +47,6 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
             <controls:ClockControl Grid.Column="1" HorizontalAlignment="Right" />
         </Grid>
 
@@ -69,6 +68,12 @@
                             <views:SatelliteStatsView />
                         </DataTemplate>
                     </local:PanesTemplateSelector.SatelliteStatsViewTemplate>
+
+                    <local:PanesTemplateSelector.ObserverInfoViewTemplate>
+                        <DataTemplate>
+                            <views:ObserverInfoView />
+                        </DataTemplate>
+                    </local:PanesTemplateSelector.ObserverInfoViewTemplate>
                 </local:PanesTemplateSelector>
             </ad:DockingManager.LayoutItemTemplateSelector>
 
@@ -100,7 +105,10 @@
                             </ad:LayoutDocument>
                         </ad:LayoutDocumentPane>
 
-                        <ad:LayoutAnchorablePane Name="SatelliteInfoPane" DockWidth="300" />
+                        <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
+                            <ad:LayoutAnchorablePane Name="SatelliteInfoPane" />
+                            <ad:LayoutAnchorablePane Name="ObserverInfoPane" DockHeight="100" />
+                        </ad:LayoutAnchorablePaneGroup>
                     </ad:LayoutPanel>
 
                     <ad:LayoutAnchorablePane Name="SatelliteStatsPane" DockHeight="300" />

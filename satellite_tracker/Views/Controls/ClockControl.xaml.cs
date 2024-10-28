@@ -32,6 +32,8 @@ namespace satellite_tracker.Views.Controls
             _timer.Tick += Timer_Tick;
             _timer.Start();
 
+            LocalTimeZone.Content = TimeZoneInfo.Local.Id;
+
             UtcTime.Content = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}";
             KstTime.Content = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss}";
         }

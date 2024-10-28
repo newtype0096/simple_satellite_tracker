@@ -2,7 +2,7 @@
 
 namespace satellite_tracker.Models
 {
-    public class SatelliteInfo : ObservableObject
+    public class PropertyItem : ObservableObject
     {
         private string _name;
         public string Name

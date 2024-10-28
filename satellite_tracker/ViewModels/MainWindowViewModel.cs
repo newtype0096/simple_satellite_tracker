@@ -10,6 +10,8 @@ namespace satellite_tracker.ViewModels
 
         public SatelliteStatsViewModel SatelliteStats => SatelliteStatsViewModel.Default;
 
+        public ObserverInfoViewModel ObserverInfo => ObserverInfoViewModel.Default;
+
         private PaneViewModel[] _panes;
         public IEnumerable<PaneViewModel> Panes
         {
@@ -17,7 +19,7 @@ namespace satellite_tracker.ViewModels
             {
                 if (_panes == null)
                 {
-                    _panes = new PaneViewModel[] { SatelliteInfo, SatelliteStats };
+                    _panes = new PaneViewModel[] { SatelliteInfo, SatelliteStats, ObserverInfo };
                 }
 
                 return _panes;

@@ -25,6 +25,11 @@ namespace satellite_tracker
                 return CommonStyle;
             }
 
+            if (item is ObserverInfoViewModel)
+            {
+                return CommonStyle;
+            }
+
             return base.SelectStyle(item, container);
         }
     }

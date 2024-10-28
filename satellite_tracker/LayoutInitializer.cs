@@ -43,6 +43,16 @@ namespace satellite_tracker
                 }
             }
 
+            if (anchorableToShow.Content is ObserverInfoViewModel)
+            {
+                var pane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == "ObserverInfoPane");
+                if (pane != null)
+                {
+                    pane.Children.Add(anchorableToShow);
+                    return true;
+                }
+            }
+
             return false;
         }
 
