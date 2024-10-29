@@ -87,7 +87,7 @@ namespace satellite_tracker.ViewModels
 
                         if (OrbitViewModel.Default.SelectedSat?.SatCatItem.NORAD_CAT_ID == norad_cat_id)
                         {
-                            OrbitViewModel.Default.UpdateOrbit();
+                            App.Current.Dispatcher.Invoke(() => { OrbitViewModel.Default.UpdateOrbit(); });
                         }
                     }
                 };
