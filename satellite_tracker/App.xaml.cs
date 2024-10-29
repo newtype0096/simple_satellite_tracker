@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MvvmDialogs;
 using satellite_tracker.ViewModels;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace satellite_tracker
 {
@@ -13,6 +14,12 @@ namespace satellite_tracker
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            LogManager.Info("========== Application Start ==========");
+
+#if !DEBUG
+            Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
+#endif
+
             Ioc.Default.ConfigureServices(
                 new ServiceCollection()
                     .AddSingleton<IDialogService, DialogService>()
@@ -25,6 +32,11 @@ namespace satellite_tracker
         protected override void OnExit(ExitEventArgs e)
         {
             GlobalData.Default.Destory();
+        }
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            LogManager.Error($"[{e.Exception.Source}] {e.Exception.Message}\n{e.Exception.StackTrace}");
         }
     }
 }
