@@ -90,6 +90,8 @@ namespace satellite_tracker.ViewModels
                 oldX = x;
                 oldY = y;
             }
+
+            OrbitLineControl?.DrawOrbitLine();
         }
 
         public void UpdateIndicator()

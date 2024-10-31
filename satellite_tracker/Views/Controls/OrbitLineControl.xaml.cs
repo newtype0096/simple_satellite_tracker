@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -28,35 +29,57 @@ namespace satellite_tracker.Views.Controls
         {
             _orbitLineVisualHost.ClearOrbitLine();
         }
+
+        public void DrawOrbitLine()
+        {
+            _orbitLineVisualHost.DrawOrbitLine();
+        }
     }
 
     public class OrbitLineVisualHost : FrameworkElement
     {
         private VisualCollection _visuals;
+        private DrawingVisual _drawingVisual;
+        private List<(Point, Point)> _lines = new List<(Point, Point)>();
 
         public OrbitLineVisualHost()
         {
-            VisualBitmapScalingMode = BitmapScalingMode.NearestNeighbor;
-            VisualEdgeMode = EdgeMode.Aliased;
+            _drawingVisual = new DrawingVisual();
 
             _visuals = new VisualCollection(this);
+            _visuals.Add(_drawingVisual);
+
+            RenderOptions.SetEdgeMode(_drawingVisual, EdgeMode.Unspecified);
+            RenderOptions.SetBitmapScalingMode(_drawingVisual, BitmapScalingMode.NearestNeighbor);
         }
 
         public void AddOrbitLine(Point start, Point end)
         {
-            var visual = new DrawingVisual();
+            _lines.Add((start, end));
+        }
 
-            using (DrawingContext dc = visual.RenderOpen())
+        public void DrawOrbitLine()
+        {
+            using (DrawingContext dc = _drawingVisual.RenderOpen())
             {
-                var pen = new Pen(Brushes.Gold, 3);
-                dc.DrawLine(pen, start, end);
+                foreach (var line in _lines)
+                {
+                    var pen = new Pen(Brushes.Gold, 3)
+                    {
+                        LineJoin = PenLineJoin.Round,
+                        EndLineCap = PenLineCap.Round
+                    };
+
+                    dc.DrawLine(pen, line.Item1, line.Item2);
+                }
             }
-            _visuals.Add(visual);
         }
 
         public void ClearOrbitLine()
         {
-            _visuals.Clear();
+            _lines.Clear();
+
+            _drawingVisual.RenderOpen();
         }
 
         protected override int VisualChildrenCount => _visuals.Count;
