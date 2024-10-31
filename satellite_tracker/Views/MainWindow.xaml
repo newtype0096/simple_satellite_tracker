@@ -35,6 +35,10 @@
                     <MenuItem Header="Observer Info"
                               IsCheckable="True"
                               IsChecked="{Binding ObserverInfo.IsVisible, Mode=TwoWay}" />
+
+                    <MenuItem Header="Orbit 3d"
+                              IsCheckable="True"
+                              IsChecked="{Binding ObserverInfo.IsVisible, Mode=TwoWay}" />
                 </MenuItem>
             </Menu>
         </mah:WindowCommands>
@@ -74,6 +78,12 @@
                             <views:ObserverInfoView />
                         </DataTemplate>
                     </local:PanesTemplateSelector.ObserverInfoViewTemplate>
+
+                    <local:PanesTemplateSelector.Orbit3dViewTemplate>
+                        <DataTemplate>
+                            <views:Orbit3dView />
+                        </DataTemplate>
+                    </local:PanesTemplateSelector.Orbit3dViewTemplate>
                 </local:PanesTemplateSelector>
             </ad:DockingManager.LayoutItemTemplateSelector>
 
@@ -104,6 +114,10 @@
                                 <views:MainView />
                             </ad:LayoutDocument>
                         </ad:LayoutDocumentPane>
+
+                        <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
+                            <ad:LayoutAnchorablePane Name="Orbit3dPane" />
+                        </ad:LayoutAnchorablePaneGroup>
 
                         <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
                             <ad:LayoutAnchorablePane Name="SatelliteInfoPane" />

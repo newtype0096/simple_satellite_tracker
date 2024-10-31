@@ -30,6 +30,11 @@ namespace satellite_tracker
                 return CommonStyle;
             }
 
+            if (item is Orbit3dViewModel)
+            {
+                return CommonStyle;
+            }
+
             return base.SelectStyle(item, container);
         }
     }

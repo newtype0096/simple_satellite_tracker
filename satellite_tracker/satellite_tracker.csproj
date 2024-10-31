@@ -155,6 +155,7 @@
     <Compile Include="PanesTemplateSelector.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModels\ObserverInfoViewModel.cs" />
+    <Compile Include="ViewModels\Orbit3dViewModel.cs" />
     <Compile Include="ViewModels\OrbitViewModel.cs" />
     <Compile Include="ViewModels\PaneViewModel.cs" />
     <Compile Include="ViewModels\SatelliteInfoViewModel.cs" />
@@ -175,6 +176,9 @@
     </Compile>
     <Compile Include="Views\ObserverInfoView.xaml.cs">
       <DependentUpon>ObserverInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Orbit3dView.xaml.cs">
+      <DependentUpon>Orbit3dView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OrbitGridView.xaml.cs">
       <DependentUpon>OrbitGridView.xaml</DependentUpon>
@@ -242,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ObserverInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Orbit3dView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

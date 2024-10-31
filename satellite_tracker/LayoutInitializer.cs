@@ -53,6 +53,16 @@ namespace satellite_tracker
                 }
             }
 
+            if (anchorableToShow.Content is Orbit3dViewModel)
+            {
+                var pane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == "Orbit3dPane");
+                if (pane != null)
+                {
+                    pane.Children.Add(anchorableToShow);
+                    return true;
+                }
+            }
+
             return false;
         }
 

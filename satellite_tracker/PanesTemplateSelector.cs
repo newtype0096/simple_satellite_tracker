@@ -12,6 +12,8 @@ namespace satellite_tracker
 
         public DataTemplate ObserverInfoViewTemplate { get; set; }
 
+        public DataTemplate Orbit3dViewTemplate { get; set; }
+
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             if (item is SatelliteInfoViewModel)
@@ -27,6 +29,11 @@ namespace satellite_tracker
             if (item is ObserverInfoViewModel)
             {
                 return ObserverInfoViewTemplate;
+            }
+
+            if (item is Orbit3dViewModel)
+            {
+                return Orbit3dViewTemplate;
             }
 
             return base.SelectTemplate(item, container);
