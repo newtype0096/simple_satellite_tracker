@@ -24,6 +24,8 @@ namespace CelesTrakLib.Datas
         public double Speed { get; set; }
         public string RightAscension { get; set; }
         public string Declination { get; set; }
+        public double Azimuth { get; set; }
+        public double Elevation { get; set; }
 
         public DateTime LastCoordinatesUpdateTime { get; set; }
         public List<Coordinate> Coordinates { get; } = new List<Coordinate>();

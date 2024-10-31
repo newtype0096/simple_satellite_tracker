@@ -34,8 +34,8 @@ namespace satellite_tracker.ViewModels
                     var coord = watcher.Position.Location;
                     if (!coord.IsUnknown)
                     {
-                        FindInfo("Latitude").Data = Latitude = coord.Latitude;
-                        FindInfo("Longitude").Data = Longitude = coord.Longitude;
+                        FindInfo("Latitude").Data = Latitude = GlobalData.Default.CelesTrak.ObserverLatitude = coord.Latitude;
+                        FindInfo("Longitude").Data = Longitude = GlobalData.Default.CelesTrak.ObserverLongitude = coord.Longitude;
                         FindInfo("Local Time zone").Data = TimeZoneInfo.Local.DisplayName;
                     }
                 }

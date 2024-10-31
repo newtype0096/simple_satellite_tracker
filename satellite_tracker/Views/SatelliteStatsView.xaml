@@ -69,9 +69,13 @@
                                     Binding="{Binding Speed, StringFormat={}{0:F2}}"
                                     Header="Speed [km/s]" />
 
-                <DataGridTextColumn Width="100" Header="Azimuth" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding AzimuthText, StringFormat={}{0:F2}}"
+                                    Header="Azimuth" />
 
-                <DataGridTextColumn Width="100" Header="Elevation" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Elevation, StringFormat={}{0:F2}}"
+                                    Header="Elevation" />
 
                 <DataGridTextColumn Width="200"
                                     Binding="{Binding RightAscension}"
@@ -80,8 +84,6 @@
                 <DataGridTextColumn Width="150"
                                     Binding="{Binding Declination}"
                                     Header="Declination" />
-
-                <DataGridTextColumn Width="200" Header="Local Sidereal Time" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

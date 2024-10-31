@@ -67,6 +67,8 @@ namespace satellite_tracker.ViewModels
                         sat.Speed = trackingInfo.Speed;
                         sat.RightAscension = trackingInfo.RightAscension;
                         sat.Declination = trackingInfo.Declination;
+                        sat.Azimuth = trackingInfo.Azimuth;
+                        sat.Elevation = trackingInfo.Elevation;
 
                         sat.TrackingInfoItem = trackingInfo;
 

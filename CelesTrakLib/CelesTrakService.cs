@@ -29,6 +29,9 @@ namespace CelesTrakLib
         public UpdatePosition UpdatePositionCallback { get; set; }
         public UpdateCoordinates UpdateCoordinatesCallback { get; set; }
 
+        public double ObserverLatitude { get; set; }
+        public double ObserverLongitude { get; set; }
+
         public CelesTrakService(string workingDirectory)
         {
             _workingDirectory = workingDirectory;
@@ -132,8 +135,15 @@ namespace CelesTrakLib
 
         private void TrackingThreadProc()
         {
+            Coordinate observer = null;
+
             while (!_threadExit)
             {
+                if (ObserverLatitude != 0 && ObserverLongitude != 0)
+                {
+                    observer = new Coordinate(ObserverLatitude, ObserverLongitude);
+                }
+
                 lock (_cs)
                 {
                     foreach (var target in _targets)
@@ -170,6 +180,13 @@ namespace CelesTrakLib
                             target.Value.Speed = Utils.GetSpeed(target.Value.Sgp4DataItem.getVelocityData());
                             target.Value.RightAscension = Utils.GetRightAscension(target.Value.Sgp4DataItem.getPositionData());
                             target.Value.Declination = Utils.GetDeclination(target.Value.Sgp4DataItem.getPositionData());
+
+                            if (observer != null)
+                            {
+                                var spherical = SatFunctions.calcSphericalCoordinate(observer, epochTime, target.Value.Sgp4DataItem);
+                                target.Value.Azimuth = spherical.y;
+                                target.Value.Elevation = spherical.z;
+                            }
 
                             target.Value.LastPositionUpdateTime = DateTime.Now;
 
