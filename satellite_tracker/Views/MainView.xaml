@@ -9,7 +9,7 @@
              d:DesignWidth="600"
              mc:Ignorable="d">
     <Grid>
-        <!--<controls:WorldMapControl />-->
+        <controls:WorldMapControl />
 
         <local:OrbitGridView />
 

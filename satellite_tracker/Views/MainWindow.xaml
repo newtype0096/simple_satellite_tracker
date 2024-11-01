@@ -38,7 +38,7 @@
 
                     <MenuItem Header="Orbit 3d"
                               IsCheckable="True"
-                              IsChecked="{Binding ObserverInfo.IsVisible, Mode=TwoWay}" />
+                              IsChecked="{Binding Orbit3d.IsVisible, Mode=TwoWay}" />
                 </MenuItem>
             </Menu>
         </mah:WindowCommands>
