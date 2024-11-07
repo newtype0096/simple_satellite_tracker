@@ -105,27 +105,22 @@
             <ad:LayoutRoot>
                 <ad:LayoutPanel DockHeight="*"
                                 DockWidth="*"
-                                Orientation="Vertical">
-                    <ad:LayoutPanel DockHeight="*"
-                                    DockWidth="*"
-                                    Orientation="Horizontal">
+                                Orientation="Horizontal">
+                    <ad:LayoutPanel Orientation="Vertical">
                         <ad:LayoutDocumentPane ShowHeader="False">
                             <ad:LayoutDocument>
                                 <views:MainView />
                             </ad:LayoutDocument>
                         </ad:LayoutDocumentPane>
 
-                        <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
-                            <ad:LayoutAnchorablePane Name="Orbit3dPane" />
-                        </ad:LayoutAnchorablePaneGroup>
-
-                        <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
-                            <ad:LayoutAnchorablePane Name="SatelliteInfoPane" />
-                            <ad:LayoutAnchorablePane Name="ObserverInfoPane" DockHeight="100" />
-                        </ad:LayoutAnchorablePaneGroup>
+                        <ad:LayoutAnchorablePane Name="SatelliteStatsPane" DockHeight="300" />
                     </ad:LayoutPanel>
 
-                    <ad:LayoutAnchorablePane Name="SatelliteStatsPane" DockHeight="300" />
+                    <ad:LayoutAnchorablePaneGroup DockWidth="300" Orientation="Vertical">
+                        <ad:LayoutAnchorablePane Name="Orbit3dPane" />
+                        <ad:LayoutAnchorablePane Name="SatelliteInfoPane" />
+                        <ad:LayoutAnchorablePane Name="ObserverInfoPane" />
+                    </ad:LayoutAnchorablePaneGroup>
                 </ad:LayoutPanel>
             </ad:LayoutRoot>
         </ad:DockingManager>

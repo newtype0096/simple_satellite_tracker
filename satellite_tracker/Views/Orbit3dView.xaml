@@ -6,6 +6,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             Loaded="Orbit3dView_Loaded"
              mc:Ignorable="d">
-    <Grid />
+    <Border Background="Transparent"
+            MouseDown="MainViewport3D_MouseDown"
+            MouseMove="MainViewport3D_MouseMove"
+            MouseUp="MainViewport3D_MouseUp"
+            MouseWheel="MainViewport3D_MouseWheel">
+        <Viewport3D Name="MainViewport3D" />
+    </Border>
 </UserControl>
