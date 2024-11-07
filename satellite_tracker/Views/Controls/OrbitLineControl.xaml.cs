@@ -79,7 +79,7 @@ namespace satellite_tracker.Views.Controls
         {
             _lines.Clear();
 
-            _drawingVisual.RenderOpen();
+            DrawOrbitLine();
         }
 
         protected override int VisualChildrenCount => _visuals.Count;

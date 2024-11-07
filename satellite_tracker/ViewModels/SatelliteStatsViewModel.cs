@@ -28,6 +28,7 @@ namespace satellite_tracker.ViewModels
             set
             {
                 OrbitViewModel.Default.SelectedSat = value;
+                Orbit3dViewModel.Default.SelectedSat = value;
                 SatelliteInfoViewModel.Default.SelectedSat = value;
 
                 SetProperty(ref _selectedSat, value);

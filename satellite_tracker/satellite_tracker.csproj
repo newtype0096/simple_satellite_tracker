@@ -164,6 +164,9 @@
     <Compile Include="Views\Controls\ClockControl.xaml.cs">
       <DependentUpon>ClockControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\GlobeControl.xaml.cs">
+      <DependentUpon>GlobeControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\OrbitLineControl.xaml.cs">
       <DependentUpon>OrbitLineControl.xaml</DependentUpon>
     </Compile>
@@ -230,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\ClockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\GlobeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
