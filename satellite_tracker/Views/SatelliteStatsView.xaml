@@ -70,6 +70,10 @@
                                     Header="Speed [km/s]" />
 
                 <DataGridTextColumn Width="100"
+                                    Binding="{Binding KM, StringFormat={}{0:F2}}"
+                                    Header="KM" />
+
+                <DataGridTextColumn Width="100"
                                     Binding="{Binding AzimuthText, StringFormat={}{0:F2}}"
                                     Header="Azimuth" />
 

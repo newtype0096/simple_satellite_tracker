@@ -184,6 +184,7 @@ namespace CelesTrakLib
                             if (observer != null)
                             {
                                 var spherical = SatFunctions.calcSphericalCoordinate(observer, epochTime, target.Value.Sgp4DataItem);
+                                target.Value.Km = spherical.x;
                                 target.Value.Azimuth = spherical.y;
                                 target.Value.Elevation = spherical.z;
                             }

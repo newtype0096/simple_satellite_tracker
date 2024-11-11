@@ -44,6 +44,13 @@ namespace satellite_tracker.Models
             set => SetProperty(ref _azimuthText, value);
         }
 
+        private double _km;
+        public double KM
+        {
+            get => _km;
+            set => SetProperty(ref _km, value);
+        }
+
         public double Azimuth
         {
             set
