@@ -5,8 +5,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:satellite_tracker.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:satellite_tracker.ViewModels"
+             d:DataContext="{d:DesignInstance Type=vm:Orbit3dViewModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <controls:GlobeControl x:Name="GlobeControl" />
+    <Border Background="Transparent"
+            MouseDown="MainViewport3D_MouseDown"
+            MouseMove="MainViewport3D_MouseMove"
+            MouseUp="MainViewport3D_MouseUp"
+            MouseWheel="MainViewport3D_MouseWheel">
+        <Viewport3D x:Name="MainViewport3D">
+            <Viewport3D.Camera>
+                <PerspectiveCamera FieldOfView="60"
+                                   LookDirection="{Binding ViewportCamera.CameraLookDirection}"
+                                   Position="{Binding ViewportCamera.CameraPosition}"
+                                   UpDirection="{Binding ViewportCamera.CameraUpDirection}" />
+            </Viewport3D.Camera>
+
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <Model3DGroup>
+                        <AmbientLight Color="Gray" />
+
+                        <DirectionalLight Direction="-1.0, -3.0, -2.0" Color="Gray" />
+
+                        <Model3DGroup>
+                            <GeometryModel3D>
+                                <GeometryModel3D.Material>
+                                    <DiffuseMaterial>
+                                        <DiffuseMaterial.Brush>
+                                            <ImageBrush ImageSource="pack://application:,,,/Resources/land_shallow_topo_2048.jpg" />
+                                        </DiffuseMaterial.Brush>
+                                    </DiffuseMaterial>
+                                </GeometryModel3D.Material>
+
+                                <GeometryModel3D.Geometry>
+                                    <MeshGeometry3D Positions="{Binding GlobeMesh.Positions}"
+                                                    TextureCoordinates="{Binding GlobeMesh.TextureCoordinates}"
+                                                    TriangleIndices="{Binding GlobeMesh.TriangleIndices}" />
+                                </GeometryModel3D.Geometry>
+                            </GeometryModel3D>
+                        </Model3DGroup>
+                    </Model3DGroup>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+        </Viewport3D>
+    </Border>
 </UserControl>

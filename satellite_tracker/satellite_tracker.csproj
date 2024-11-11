@@ -146,11 +146,13 @@
     <Compile Include="GlobalData.cs" />
     <Compile Include="LayoutInitializer.cs" />
     <Compile Include="LogManager.cs" />
+    <Compile Include="Models\GlobeMesh.cs" />
     <Compile Include="Models\Indicator.cs" />
     <Compile Include="Models\ObserverIndicator.cs" />
     <Compile Include="Models\Satellite.cs" />
     <Compile Include="Models\SatelliteIndicator.cs" />
     <Compile Include="Models\PropertyItem.cs" />
+    <Compile Include="Models\ViewportCamera.cs" />
     <Compile Include="PanesStyleSelector.cs" />
     <Compile Include="PanesTemplateSelector.cs" />
     <Compile Include="ViewModelLocator.cs" />
@@ -163,9 +165,6 @@
     <Compile Include="Views\Behaviros\DataGridSelectedItemsBehavior.cs" />
     <Compile Include="Views\Controls\ClockControl.xaml.cs">
       <DependentUpon>ClockControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\GlobeControl.xaml.cs">
-      <DependentUpon>GlobeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\OrbitLineControl.xaml.cs">
       <DependentUpon>OrbitLineControl.xaml</DependentUpon>
@@ -233,10 +232,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\ClockControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Controls\GlobeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
