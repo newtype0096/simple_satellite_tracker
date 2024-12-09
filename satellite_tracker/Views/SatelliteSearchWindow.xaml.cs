@@ -33,5 +33,13 @@ namespace satellite_tracker.Views
                 vm?.FilterSatCat();
             }
         }
+
+        private void SatelliteSearchWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!IsCloseButtonEnabled)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }

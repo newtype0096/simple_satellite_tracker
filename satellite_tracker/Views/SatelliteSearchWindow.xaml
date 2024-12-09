@@ -11,10 +11,13 @@
                  xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
                  xmlns:vm="clr-namespace:satellite_tracker.ViewModels"
                  Title="Satellite Search"
-                 Width="800"
-                 Height="450"
+                 Width="900"
+                 Height="550"
                  d:DataContext="{d:DesignInstance Type=vm:SatelliteSearchWindowViewModel}"
                  md:DialogServiceViews.IsRegistered="True"
+                 Closing="SatelliteSearchWindow_Closing"
+                 IsCloseButtonEnabled="{Binding IsCloseButtonEnabled}"
+                 WindowStartupLocation="CenterOwner"
                  WindowTitleBrush="Transparent"
                  mc:Ignorable="d">
     <i:Interaction.Triggers>
@@ -75,7 +78,9 @@
                 </i:Interaction.Behaviors>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding SatCatItem.OBJECT_ID}" Header="International&#x0a;Designator" />
+                    <DataGridTextColumn Width="Auto"
+                                        Binding="{Binding SatCatItem.OBJECT_ID}"
+                                        Header="International&#x0a;Designator" />
                     <DataGridTextColumn Binding="{Binding SatCatItem.NORAD_CAT_ID}" Header="NORAD ID" />
                     <DataGridTextColumn Binding="{Binding SatCatItem.OBJECT_NAME}" Header="Name" />
                     <DataGridTextColumn Binding="{Binding SatCatItem.OWNER}" Header="Source" />

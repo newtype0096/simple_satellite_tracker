@@ -20,11 +20,23 @@ namespace satellite_tracker.ViewModels
             private set => SetProperty(ref _dialogResult, value);
         }
 
+        private bool _isCloseButtonEnabled = true;
+        public bool IsCloseButtonEnabled
+        {
+            get => _isCloseButtonEnabled;
+            set => SetProperty(ref _isCloseButtonEnabled, value);
+        }
+
         private bool _isBusy = false;
         public bool IsBusy
         {
             get => _isBusy;
-            set => SetProperty(ref _isBusy, value);
+            set
+            {
+                SetProperty(ref _isBusy, value);
+
+                IsCloseButtonEnabled = !_isBusy;
+            }
         }
 
         private bool _isPayload = false;

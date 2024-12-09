@@ -101,6 +101,22 @@ namespace satellite_tracker.ViewModels
                 indicator.UpdateIndicator(SelectedSat, WindowWidth, WindowHeight);
             }
 
+            UpdateObserverIndicator();
+        }
+
+        public void UpdateIndicatorBySat(Satellite sat)
+        {
+            var indicator = Indicators.FirstOrDefault(x => x.Sat == sat);
+            if (indicator != null)
+            {
+                indicator.UpdateIndicator(SelectedSat, WindowWidth, WindowHeight);
+            }
+
+            UpdateObserverIndicator();
+        }
+
+        private void UpdateObserverIndicator()
+        {
             Observer.UpdateIndicator(ObserverInfoViewModel.Default.Latitude, ObserverInfoViewModel.Default.Longitude, WindowWidth, WindowHeight);
         }
 
