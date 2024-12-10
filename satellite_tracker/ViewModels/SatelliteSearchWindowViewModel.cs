@@ -89,12 +89,7 @@ namespace satellite_tracker.ViewModels
             set => SetProperty(ref _filteredSatellites, value);
         }
 
-        private List<Satellite> _targetSatellites = new List<Satellite>();
-        public List<Satellite> TargetSatellites
-        {
-            get => _targetSatellites;
-            set => SetProperty(ref _targetSatellites, value);
-        }
+        public List<Satellite> TargetSatellites { get; } = new List<Satellite>();
 
         public RelayCommand InitDialogCommand { get; }
         public RelayCommand OkCommand { get; }

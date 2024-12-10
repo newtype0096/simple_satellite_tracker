@@ -26,19 +26,9 @@ namespace satellite_tracker.ViewModels
             set => SetProperty(ref _viewportCamera, value);
         }
 
-        private Model3DCollection _mainModel3dGroup = new Model3DCollection();
-        public Model3DCollection MainModel3dGroup
-        {
-            get => _mainModel3dGroup;
-            set => SetProperty(ref _mainModel3dGroup, value);
-        }
+        public Model3DCollection MainModel3dGroup { get; } = new Model3DCollection();
 
-        private GlobeMesh _globeMesh = new GlobeMesh();
-        public GlobeMesh GlobeMesh
-        {
-            get => _globeMesh;
-            set => SetProperty(ref _globeMesh, value);
-        }
+        public GlobeMesh GlobeMesh { get; } = new GlobeMesh();
 
         private Satellite _selectedSat;
         public Satellite SelectedSat

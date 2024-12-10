@@ -9,12 +9,7 @@ namespace satellite_tracker.ViewModels
     {
         public static ObserverInfoViewModel Default { get; } = new ObserverInfoViewModel();
 
-        private List<PropertyItem> _observerInfos = new List<PropertyItem>();
-        public List<PropertyItem> ObserverInfos
-        {
-            get => _observerInfos;
-            set => SetProperty(ref _observerInfos, value);
-        }
+        public List<PropertyItem> ObserverInfos { get; } = new List<PropertyItem>();
 
         public double Latitude { get; private set; }
         public double Longitude { get; private set; }

@@ -7,12 +7,7 @@ namespace satellite_tracker.ViewModels
     {
         public static SatelliteInfoViewModel Default { get; } = new SatelliteInfoViewModel();
 
-        private List<PropertyItem> _satelliteInfos = new List<PropertyItem>();
-        public List<PropertyItem> SatelliteInfos
-        {
-            get => _satelliteInfos;
-            set => SetProperty(ref _satelliteInfos, value);
-        }
+        public List<PropertyItem> SatelliteInfos { get; } = new List<PropertyItem>();
 
         private Satellite _selectedSat;
         public Satellite SelectedSat

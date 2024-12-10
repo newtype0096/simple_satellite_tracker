@@ -14,12 +14,7 @@ namespace satellite_tracker.ViewModels
 
         private string _trackingTargetListFileName;
 
-        private ObservableCollection<Satellite> _satellites = new ObservableCollection<Satellite>();
-        public ObservableCollection<Satellite> Satellites
-        {
-            get => _satellites;
-            set => SetProperty(ref _satellites, value);
-        }
+        public ObservableCollection<Satellite> Satellites { get; } = new ObservableCollection<Satellite>();
 
         private Satellite _selectedSat;
         public Satellite SelectedSat

@@ -30,19 +30,9 @@ namespace satellite_tracker.ViewModels
             }
         }
 
-        private ObservableCollection<SatelliteIndicator> _indicators = new ObservableCollection<SatelliteIndicator>();
-        public ObservableCollection<SatelliteIndicator> Indicators
-        {
-            get => _indicators;
-            set => SetProperty(ref _indicators, value);
-        }
+        public ObservableCollection<SatelliteIndicator> Indicators { get; } = new ObservableCollection<SatelliteIndicator>();
 
-        private ObserverIndicator _observer = new ObserverIndicator();
-        public ObserverIndicator Observer
-        {
-            get => _observer;
-            set => SetProperty(ref _observer, value);
-        }
+        public ObserverIndicator Observer { get; } = new ObserverIndicator();
 
         public RelayCommand<(double, double)?> SizeCommand { get; }
 
